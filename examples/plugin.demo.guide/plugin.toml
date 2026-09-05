@@ -1,0 +1,52 @@
+dependencies = []
+permissions = ["plugins.manage"]
+capabilities = ["chat.send", "points.manage", "chat.read", "network"]
+builtins = ["runtime.pay"]
+
+[plugin]
+id = "plugin.demo.guide"
+name = "开发指南演示"
+version = "1.2.0"
+entrypoint = "demo_guide:setup"
+
+[[commands]]
+name = "guide"
+category = "demo"
+description = "插件开发指南演示主入口（卡片/积分/汇率/网页数据）"
+
+[[commands]]
+name = "ping"
+category = "diagnostic"
+description = "检查机器人响应（pong）"
+
+[[commands]]
+name = "echo"
+category = "diagnostic"
+description = "回显输入文本"
+
+[[commands]]
+name = "card"
+category = "card"
+description = "测试 Markdown 卡片与按钮交互"
+
+[[commands]]
+name = "id"
+category = "identity"
+description = "查询用户稳定 ID 与会话信息"
+
+[[commands]]
+name = "pip"
+category = "system"
+description = "查询 Python 依赖包"
+
+[[events]]
+type = "*"
+
+[[tasks]]
+id = "snapshot"
+interval_seconds = 60
+
+[[pages]]
+id = "home"
+title = "演示插件面板"
+path = "pages/index.html"

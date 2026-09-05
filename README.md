@@ -22,7 +22,8 @@ docker pull ghcr.io/chinachani/qq-runtime:latest
 | --- | --- |
 | [docs/部署教程.md](docs/部署教程.md) | 从零部署一个机器人实例 |
 | [docs/插件开发指南.md](docs/插件开发指南.md) | 插件结构、权限、卡片、网页面板、发布签名 |
-| [CHANGELOG.md](CHANGELOG.md) | 版本更新日志 |
+| [docs/授权协议.md](docs/授权协议.md) | 软件许可与授权协议 |
+| [examples/plugin.demo.guide/](examples/plugin.demo.guide/) | 示例插件（对应开发指南的完整演示） |
 
 ## 授权与版本
 
