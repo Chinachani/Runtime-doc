@@ -3,6 +3,14 @@
 格式参考 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)；
 版本号遵循语义化版本。买家通过管理台「更新检查」或本页获取新版本信息。
 
+## [0.3.2] - 2026-09-06
+
+### 修复与运维
+
+- 修复 Watchtower 一键更新中断 Bug：修复伴生更新服务默认扫描全部容器、在拉取私有本地构建的 Dashboard 容器时遭遇权限拒绝导致更新流程中断的问题。
+- 引入容器精准更新隔离标签：在 Compose 配置中为 Runtime 容器添加专属更新标签（`com.centurylinklabs.watchtower.enable=true`），并在 Watchtower 启用 `WATCHTOWER_LABEL_ENABLE: "true"`，杜绝误更新与权限拒绝异常。
+- 确保自动更新平滑闭环：容器镜像目标规范绑定为 `latest` 标签，实现管理台点击一键更新后自动拉取新版本并重启服务。
+
 ## [0.3.1] - 2026-09-06
 
 ### 管理台与系统
