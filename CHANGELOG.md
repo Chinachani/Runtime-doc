@@ -3,6 +3,18 @@
 格式参考 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)；
 版本号遵循语义化版本。买家通过管理台「更新检查」或本页获取新版本信息。
 
+## [0.4.0] - 2026-09-06
+
+### 新增功能与架构演进
+
+- **Linux 服务器 Docker 智能一键部署脚本 (`install.sh`)**：支持无代码环境下一键智能部署，具备操作系统架构自检、Docker 与 Docker Compose 守护进程运行检测与自启/安装引导；内置 4 大国内高速加速源（`ghcr.1ms.run`、`ghcr.nju.edu.cn`、`ghcr.milu.moe`、`docker.m.daocloud.io`）及官方源交互切换；自动生成强随机主密钥、高强度安全初始管理员凭证、生产级 `compose.yaml` 与 `.env`；集成容器健康检查轮询与精美控制台高亮卡片。
+- **全端原生接入底座与 API Token 鉴权体系**：
+  - 新增 `api_tokens` 数据表与持久化方法，支持长期与限期 API Token 的安全哈希存储（SHA-256）；
+  - `current_user` 认证机制升级：支持 `Authorization: Bearer <TOKEN>` 头部鉴权，无缝适配 Tauri 桌面端与 Capacitor 移动端原生直连；
+  - Bearer Token 认证自动豁免 CSRF 检查，确保客户端跨源调用的合规与安全；
+  - 提供 `POST /api/auth/token` 账密换取 Token 开放接口，以及管理台 Token 签发、查看与撤销路由（`/api/system/tokens`）；
+  - 引入 `CORSMiddleware` 跨源访问支持，打通桌面端（`tauri://*`）与移动端（`capacitor://*`）跨域调用。
+
 ## [0.3.4] - 2026-09-06
 
 ### 修复与控制台优化
