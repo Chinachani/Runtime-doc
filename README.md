@@ -16,8 +16,8 @@ QQ 官方机器人运行时框架（企业级聚合发行版）。基于 Python 
 # 官方公网源安装
 curl -fsSL https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/install.sh | bash
 
-# 国内高速加速安装（推荐中国大陆服务器，支持 GitHub 加速通道）
-curl -fsSL https://ghfast.top/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/install.sh | bash
+# 国内高速加速安装（gh-proxy 加速）
+curl -fsSL https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/install.sh | bash
 ```
 
 ### 内置国内 Docker 镜像加速源
