@@ -309,7 +309,30 @@ services:
       WATCHTOWER_LABEL_ENABLE: "true"
     expose:
       - "8080"
+
+  watermarks-remover:
+    # 水印清理 sidecar（上游官方镜像，内置 exiftool/qpdf/ghostscript/ffmpeg）。
+    # Runtime 水印插件通过 RUNTIME_DASHBOARD_URL 同网络访问 http://watermarks-remover:8765。
+    image: ghcr.io/guillaumemeyer/watermarks-remover:latest
+    container_name: qq-runtime-watermarks
+    environment:
+      WATERMARKS_SERVER_API_KEY: ${UPDATER_TOKEN}
+    expose:
+      - "8765"
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    restart: unless-stopped
 EOF
+
+# 水印服务 Token：复用安装期生成的随机 Token，同时写入 .env 供 Runtime 读取
+WATERMARKS_TOKEN=${UPDATER_TOKEN}
+sed -i "s|^# 插件沙箱默认策略|WATERMARKS_SERVICE_TOKEN=${WATERMARKS_TOKEN}\n\n# 插件沙箱默认策略|" .env
+grep -q "^WATERMARKS_SERVICE_TOKEN=" .env || printf '\n# 水印清理服务 Token\nWATERMARKS_SERVICE_TOKEN=%s\n' "${WATERMARKS_TOKEN}" >> .env
 
 # 7. 拉取镜像并启动
 echo ""
@@ -317,6 +340,11 @@ echo "------------------------------------------------------------------"
 echo -e "${BOLD}【第四步】拉取镜像并启动服务${NC}"
 info "正在拉取镜像: $IMAGE_NAME ..."
 $COMPOSE_CMD pull runtime updater || error "镜像拉取失败，请检查网络连接或更换镜像加速源后重试"
+
+# 水印清理 sidecar 拉取失败不中断安装（该插件默认关闭，可稍后补拉）
+if ! $COMPOSE_CMD pull watermarks-remover 2>/dev/null; then
+    warn "水印清理服务镜像拉取失败，可稍后执行: ${COMPOSE_CMD} pull watermarks-remover && ${COMPOSE_CMD} up -d"
+fi
 
 # dashboard 镜像随正式版本发布；拉取失败时降级为旧版 legacy 控制台而不是中断安装
 SCALE_DASHBOARD=""
