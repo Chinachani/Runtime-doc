@@ -3,6 +3,13 @@
 格式参考 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)；
 版本号遵循语义化版本。买家通过管理台「更新检查」或本页获取新版本信息。
 
+## [0.6.3] - 2026-09-09
+
+### 水印清理接入上游 watermarks-remover 服务
+
+- **客户端适配上游 API 契约**：上游 [guillaumemeyer/watermarks-remover](https://github.com/guillaumemeyer/watermarks-remover) 的 `/inspect`、`/clean` 接收 base64 文件负载（`{"file": ..., "name": "input.txt"}`），文本清理结果以 base64 `file` 字段回传；旧版内置 sidecar 的 `{"kind":"text","text":...}` 与 `{"text":...}` 契约继续兼容，两种响应形状均支持。
+- **一键部署接入官方镜像**：`install.sh` 与参考 compose 的 `watermarks-remover` 服务改用上游官方镜像 `ghcr.io/guillaumemeyer/watermarks-remover`（内置 exiftool/qpdf/Ghostscript/ffmpeg 文件元数据清理），凭 `WATERMARKS_SERVICE_TOKEN` 启用 Bearer 认证，与 Runtime 水印插件共用同一 Token。文本 Layer B 智能改写为可选能力，需另行配置 `WATERMARKS_REWRITE_*` LLM 后端。
+
 ## [0.6.2] - 2026-09-09
 
 ### 客户端启动直落登录页与发布流程修正
