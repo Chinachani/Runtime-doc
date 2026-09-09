@@ -3,6 +3,20 @@
 格式参考 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)；
 版本号遵循语义化版本。买家通过管理台「更新检查」或本页获取新版本信息。
 
+## [0.6.8] - 2026-09-09
+
+### Steam 监控插件补全（对齐 AstrBot 1.28 版）
+
+- **完整目标解析**：`/sw` 全部目标参数现在支持 `steamid64`、`好友码`（9 位 CS:GO 好友码）、`steamcommunity.com/profiles/...` 资料链接、`/id/自定义ID` 链接（经 ResolveVanityURL 解析）、`me`、`@绑定用户` 与 `@昵称` 反查；`resolve` 指令同时输出好友码。
+- **info 详细查询**：`/sw info <目标>` 输出状态（离线/在线/忙碌等 7 态中文）、实名、主页、注册时间、地区，游戏中时追加该游戏总时长与成就进度（`IPlayerService/GetOwnedGames` + `GetPlayerAchievements`）。
+- **分组订阅**：`/sw sub|unsub <分组>` 将当前会话订阅到指定分组；`/sw add|remove <目标> <分组>` 管理 SteamID 与分组的归属（同一账号可入多组，remove 仅移出该分组、无剩余分组才移出号池）；推送按分组扇出去重，分组模式启用时不回退全局订阅；`/sw groupinfo|grouplist` 分页查看，`/sw subclean` 同时清理无效全局与分组订阅。
+- **监控列表分页**：`/sw list [页码]` 每页 8 条，显示绑定用户（优先昵称）与所属分组。
+- **停止游戏推送增强**：开启 `notify_on_stop` 后推送"已停止游戏+本次游玩时长"，`show_stop_playtime_comment`（默认开）附加阶梯评价；`/sw comment on|off`、`/sw notify_on_stop on|off` 运行时开关。
+- **API 请求重试**：查询 Steam API 按配置的次数与间隔自动重试。
+- **模块化菜单**：`/sw manage|notify|query|bind|net` 输出各模块命令清单，`/sw` 卡片菜单新增详细资料/解析/完整菜单按钮。
+- **清除绑定键平台前缀**：绑定键从 `qq_official:<openid>:<steamid>` 迁移为 `<openid>:<steamid>`（与 drawimg 的清理方向一致），存量带前缀行读取时自动剥除、用户重新绑定后即写入新格式；管理台绑定列表同步归一化显示。
+- **查询本地化游戏名**：开启 `use_localized_game_name` 后按 `game_name_language` 经商店 API 换取中文名（带 TTL 缓存）。
+
 ## [0.6.6] - 2026-09-09
 
 ### 水印清理文件元数据清理与服务状态人性化
