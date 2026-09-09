@@ -3,6 +3,18 @@
 格式参考 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)；
 版本号遵循语义化版本。买家通过管理台「更新检查」或本页获取新版本信息。
 
+## [0.6.0] - 2026-09-09
+
+### 手机客户端可用性修复与部署链路闭环
+
+- **修复手机端插件页"此页面无法加载"**：APK 采用 Next.js 静态导出，动态插件页路由只能预渲染构建期已知的固定组合，外部 ZIP 插件与 `community`、`pay` 等页面的侧栏链接在客户端内全部 404。新增 `/dashboard/runtime/plugin-view` 查询参数路由：打包客户端（`NEXT_PUBLIC_CLIENT_BUILD=true`）将插件页链接解析到该单一预渲染路由、运行时按查询参数渲染任意插件页；服务端部署保持原有语义化路径完全不变。
+- **手机客户端登录页节点选择器与 Bearer Token 鉴权**：打包客户端运行于 `capacitor://` 源，`SameSite=lax` 会话 Cookie 无法跨源携带，此前 APK 既不能切换服务器节点也无法完成登录。登录页新增节点选择器（仅客户端构建渲染），登录改走 `POST /api/auth/token` 换取长期 Bearer Token（设计上豁免 CSRF）并持久化到节点条目，后续请求统一以 `Authorization: Bearer` 鉴权。
+- **消除健康检查高延迟**：`/api/health` 每次轮询都对整个 SQLite 数据库执行 `PRAGMA quick_check` 全量完整性扫描（92MB 库约 300ms），导致节点延迟探测恒为扫描耗时而非真实网络延迟。改为 5 分钟 TTL 缓存 + 过期后台无阻塞刷新；管理台运行概览仍强制真实扫描，保留权威完整性结论；`close()` 取消后台刷新任务，避免对已关闭连接执行语句。
+- **表情包模板"自动预览"开关（默认关闭）**：模板列表页原本对全部数百个模板批量加载预览图，网络压力过大。新增 `auto_preview` 配置项：默认关闭时目录接口不下发 `preview_url`、列表以"预览"文字按钮呈现，点击弹窗仍可按需加载单张预览（服务端磁盘持久缓存）；开启后恢复缩略图批量加载。
+- **一键部署脚本接入新版控制台**：`install.sh` 此前生成的 `compose.yaml` 缺少 `dashboard` 服务，`RUNTIME_DASHBOARD_URL` 未设置导致全新安装静默回退旧版 legacy 控制台。现自动推导与所选镜像源配套的 dashboard 镜像、生成 `dashboard` 服务（同源代理 + `RUNTIME_API_ORIGIN` 回连）；在 dashboard 镜像尚未发布的过渡期自动降级 legacy 控制台并提示后续一键切换命令，不中断安装。
+- **CI 发布 dashboard 镜像**：发布流程新增 `ghcr.io/chinachani/qq-runtime-dashboard` 的构建（Node 22 + standalone 产物）与版本/`latest` 双标签推送，补齐"打 tag → 双镜像发布 → 一键安装拉取"完整链路。
+- **修复绘图插件积分结算残留死代码**：清理 `drawimg` 配置导出与积分结算路径中的无用 `users` 字典与未定义 `cs` 引用（后者在 `except` 块内触发 `NameError`，会把已吞掉的业务异常升级为 500）。
+
 ## [0.4.0] - 2026-09-06
 
 ### 新增功能与架构演进
