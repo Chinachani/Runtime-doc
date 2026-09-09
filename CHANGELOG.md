@@ -3,6 +3,14 @@
 格式参考 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)；
 版本号遵循语义化版本。买家通过管理台「更新检查」或本页获取新版本信息。
 
+## [0.6.4] - 2026-09-09
+
+### 修复安卓客户端登录 Failed to fetch（Private Network Access）
+
+- **根因**：安卓 13+ WebView 强制执行 Private Network Access（PNA）——从 App 的 `http://localhost` 源向局域网地址（如 `192.168.1.219`）发起的跨源请求会先发送携带 `Access-Control-Request-Private-Network: true` 的预检；Runtime 的 CORS 中间件默认拒绝该扩展预检（HTTP 400），WebView 直接以 `Failed to fetch` 终止请求。因此健康探测（简单 GET，无预检）能通、延迟显示正常，而登录的 `POST /api/auth/token` 必然失败。
+- **修复**：CORS 中间件启用 `allow_private_network=True`，对 PNA 预检正确响应 `Access-Control-Allow-Private-Network: true`。仅影响打包客户端（本地源→私网）这一合法调用场景；浏览器直连管理台不受影响。
+- **APK versionCode 递增**：CI 由发版 tag 自动推导 versionCode（major×10⁶+minor×10³+patch），修复 versionCode 恒为 1 导致 Android 拒绝覆盖安装的问题。
+
 ## [0.6.3] - 2026-09-09
 
 ### 水印清理接入上游 watermarks-remover 服务
