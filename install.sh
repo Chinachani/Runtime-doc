@@ -169,7 +169,11 @@ case "$MIRROR_CHOICE" in
         IMAGE_DESC="ghcr.1ms.run (国内毫秒级高速)"
         ;;
 esac
+# Dashboard 控制台镜像与 Runtime 镜像同仓库发布，镜像名后缀不同
+DASHBOARD_IMAGE_NAME=$(echo "$IMAGE_NAME" | sed 's|/qq-runtime:|/qq-runtime-dashboard:|')
+
 info "已选择镜像: ${BOLD}$IMAGE_NAME${NC} ($IMAGE_DESC)"
+info "控制台镜像: ${BOLD}$DASHBOARD_IMAGE_NAME${NC}"
 
 # 5. 管理员账号与安全密钥配置
 echo ""
@@ -218,6 +222,9 @@ XDG_DATA_HOME=/app/data
 XDG_CONFIG_HOME=/app/data/config
 XDG_CACHE_HOME=/app/data/cache
 
+# 新版 Next.js 控制台服务（compose 内部网络地址）
+RUNTIME_DASHBOARD_URL=http://dashboard:3000
+
 # 伴生更新服务安全通信 Token
 RUNTIME_UPDATER_URL=http://updater:8080/v1/update
 RUNTIME_UPDATER_TOKEN=${UPDATER_TOKEN}
@@ -226,7 +233,8 @@ RUNTIME_UPDATER_TOKEN=${UPDATER_TOKEN}
 RUNTIME_PLUGIN_SANDBOX_ENABLED=true
 RUNTIME_PLUGIN_SANDBOX_NETWORK=true
 RUNTIME_PLUGIN_SANDBOX_TIMEOUT_SECONDS=300
-RUNTIME_PLUGIN_SANDBOX_CPU_SECONDS=120
+RUNTIME_PLUGIN_SANDBOX_MEMORY_MB=1024
+RUNTIME_PLUGIN_SANDBOX_CPU_SECONDS=0
 EOF
 chmod 600 .env
 
@@ -271,6 +279,22 @@ services:
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
 
+  dashboard:
+    # 新版 Next.js 管理台。runtime 通过 RUNTIME_DASHBOARD_URL 同源代理该服务；
+    # 缺失它会静默回退到旧版 legacy 静态控制台。
+    image: ${DASHBOARD_IMAGE_NAME}
+    container_name: qq-runtime-dashboard
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      RUNTIME_API_ORIGIN: "http://runtime:8080"
+    init: true
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
   updater:
     image: containrrr/watchtower:latest
     container_name: qq-runtime-updater
@@ -292,10 +316,20 @@ echo ""
 echo "------------------------------------------------------------------"
 echo -e "${BOLD}【第四步】拉取镜像并启动服务${NC}"
 info "正在拉取镜像: $IMAGE_NAME ..."
-$COMPOSE_CMD pull || error "镜像拉取失败，请检查网络连接或更换镜像加速源后重试"
+$COMPOSE_CMD pull runtime updater || error "镜像拉取失败，请检查网络连接或更换镜像加速源后重试"
+
+# dashboard 镜像随正式版本发布；拉取失败时降级为旧版 legacy 控制台而不是中断安装
+SCALE_DASHBOARD=""
+if $COMPOSE_CMD pull dashboard 2>/dev/null; then
+    info "新版控制台镜像拉取成功"
+else
+    warn "新版控制台镜像 ($DASHBOARD_IMAGE_NAME) 拉取失败，本次将使用旧版 legacy 控制台"
+    warn "可稍后执行: ${COMPOSE_CMD} pull dashboard && ${COMPOSE_CMD} up -d 切换到新版控制台"
+    SCALE_DASHBOARD="--scale dashboard=0"
+fi
 
 info "正在启动容器集群..."
-$COMPOSE_CMD up -d || error "容器启动失败，请检查 docker 日志"
+$COMPOSE_CMD up -d $SCALE_DASHBOARD || error "容器启动失败，请检查 docker 日志"
 
 # 8. 健康检查
 info "等待服务就绪中..."
