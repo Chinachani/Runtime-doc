@@ -3,6 +3,14 @@
 格式参考 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)；
 版本号遵循语义化版本。买家通过管理台「更新检查」或本页获取新版本信息。
 
+## [0.6.5] - 2026-09-09
+
+### 修复客户端登录 500（users 表无 role_id 列）
+
+- **根因**：`POST /api/auth/token` 的响应体引用了 `user["role_id"]`，而 `authenticate()` 返回的是 `users` 表原始行——该表自 v0.1 起就没有 `role_id` 列（角色经 `user_roles` 关联表映射）。凭据校验成功后在序列化响应时抛出 `KeyError`，登录一律 500。浏览器端登录走 `/api/auth/login`（不引用 role_id）所以从未暴露；打包客户端上线 Bearer 登录后必现。
+- **修复**：响应体移除 `role_id` 字段；`test_api_tokens` 的 mock 用户改为真实表结构作回归防护（修改前该测试因 mock 带 role_id 而无法复现 500）。
+- 与 0.6.4 的 PNA 预检修复叠加后，客户端"Failed to fetch"链路的两个服务端阻断点全部消除。
+
 ## [0.6.4] - 2026-09-09
 
 ### 修复安卓客户端登录 Failed to fetch（Private Network Access）
