@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ==============================================================================
 # QQ Runtime 服务器智能一键部署脚本
-# 支持自动化自检、Docker 状态监控、国内镜像加速源配置与伴生自动更新
+# 支持系统自检、硬件规格评估、可选服务编排、国内镜像加速源配置与伴生自动更新
 # ==============================================================================
 
 set -e
@@ -22,14 +22,18 @@ success() { echo -e "${GREEN}[OK]${NC} $*"; }
 warn() { echo -e "${YELLOW}[WARN]${NC} $*"; }
 error() { echo -e "${RED}[ERROR]${NC} $*"; exit 1; }
 
-# 确保能从终端交互读取（兼容 curl ... | bash）
+# 确保能从终端交互读取（兼容 curl ... | bash 与 CI 自动化）
 get_input() {
     local prompt="$1"
     local default_val="$2"
     local answer=""
+    if [ -n "$CI" ] || [ -n "$NONINTERACTIVE" ] || [ "$DEBIAN_FRONTEND" = "noninteractive" ]; then
+        echo "$default_val"
+        return
+    fi
     if [ -t 0 ]; then
         read -r -p "$prompt" answer
-    elif [ -r /dev/tty ]; then
+    elif [ -r /dev/tty ] && [ -w /dev/tty ]; then
         read -r -p "$prompt" answer </dev/tty
     else
         answer="$default_val"
@@ -74,7 +78,44 @@ if [ "$(id -u)" -ne 0 ]; then
     fi
 fi
 
-# 2. Docker 与 Docker Compose 检测
+# 2. 系统硬件自检与规格评估
+CPU_CORES=$(nproc 2>/dev/null || grep -c ^processor /proc/cpuinfo 2>/dev/null || echo "1")
+TOTAL_MEM_KB=$(awk '/MemTotal/ {print $2}' /proc/meminfo 2>/dev/null || echo "0")
+TOTAL_MEM_MB=$((TOTAL_MEM_KB / 1024))
+AVAIL_MEM_KB=$(awk '/MemAvailable/ {print $2}' /proc/meminfo 2>/dev/null || echo "0")
+AVAIL_MEM_MB=$((AVAIL_MEM_KB / 1024))
+if [ "$TOTAL_MEM_MB" -ge 1024 ]; then
+    TOTAL_MEM_STR="$(awk "BEGIN {printf \"%.1f GB\", $TOTAL_MEM_MB/1024}")"
+else
+    TOTAL_MEM_STR="${TOTAL_MEM_MB} MB"
+fi
+DISK_AVAIL_GB=$(df -BG / 2>/dev/null | tail -1 | awk '{print $4}' | tr -d 'G' || echo "未知")
+
+echo ""
+echo "------------------------------------------------------------------"
+echo -e "${BOLD}【硬件自检与规格评估】${NC}"
+echo -e " • CPU 核心数:     ${CYAN}${CPU_CORES} 核心${NC}"
+echo -e " • 系统物理内存:   ${CYAN}${TOTAL_MEM_STR}${NC} (当前可用: ${AVAIL_MEM_MB} MB)"
+echo -e " • 根分区可用磁盘: ${CYAN}${DISK_AVAIL_GB} GB${NC}"
+echo ""
+echo -e "${BOLD}💡 官方推荐硬件规格建议:${NC}"
+echo -e " [1] 核心最小化 (Runtime + Dashboard + Watchtower):"
+echo -e "     - 最低配置: 1 核 CPU / 1 GB 内存 (建议配置 1~2G Swap) / 5 GB 磁盘"
+echo -e "     - 适用场景: 基础群管、官方原生 Markdown 卡片、指令互动 (常驻内存 ~350MB)"
+echo -e " [2] 媒体增强版 (核心 + B站独立解析 + 抖音独立解析) ${GREEN}[推荐]${NC}:"
+echo -e "     - 最低配置: 2 核 CPU / 1.5 GB ~ 2 GB 内存 / 10 GB 磁盘"
+echo -e "     - 适用场景: 群内高频分享 B站/抖音 视频解析、音视频转码发送"
+echo -e " [3] 全功能套件 (媒体增强版 + 文件/视频水印清理):"
+echo -e "     - 最低配置: 2 核 CPU / 2.5 GB ~ 3 GB 内存 / 15 GB 磁盘 (推荐 4G 内存)"
+echo -e "     - 适用场景: 全媒体解析 + PDF/文档/图片/视频元数据与水印强力清理"
+echo "------------------------------------------------------------------"
+
+if [ "$TOTAL_MEM_MB" -gt 0 ] && [ "$TOTAL_MEM_MB" -lt 1500 ]; then
+    warn "⚠️  检测到当前可用物理内存小于 1.5 GB (${TOTAL_MEM_STR})！"
+    warn "强烈建议在后续步骤中选择【2) 核心最小化】模式，或在部署前为服务器配置 1~2GB Swap 虚拟内存，以防 OOM。"
+fi
+
+# 3. Docker 与 Docker Compose 检测
 info "正在检测 Docker 运行环境..."
 if ! command -v docker >/dev/null 2>&1; then
     warn "未检测到 Docker，正在准备自动安装 Docker..."
@@ -119,19 +160,19 @@ else
 fi
 success "Docker Compose 检测通过: $($COMPOSE_CMD version)"
 
-# 3. 安装参数配置
+# 4. 安装参数配置
 echo ""
 echo "------------------------------------------------------------------"
 echo -e "${BOLD}【第一步】配置安装目录与端口${NC}"
-DEFAULT_INSTALL_DIR="/opt/qq-runtime"
+DEFAULT_INSTALL_DIR=${INSTALL_DIR:-"/opt/qq-runtime"}
 if [ "$(id -u)" -ne 0 ] && [ -z "$SUDO_CMD" ]; then
-    DEFAULT_INSTALL_DIR="$HOME/qq-runtime"
+    DEFAULT_INSTALL_DIR=${INSTALL_DIR:-"$HOME/qq-runtime"}
 fi
 
 INSTALL_DIR=$(get_input "请输入安装目录路径 [默认: ${DEFAULT_INSTALL_DIR}]: " "$DEFAULT_INSTALL_DIR")
-INSTALL_PORT=$(get_input "请输入管理台外部访问端口 [默认: 8080]: " "8080")
+INSTALL_PORT=$(get_input "请输入管理台外部访问端口 [默认: ${INSTALL_PORT:-8080}]: " "${INSTALL_PORT:-8080}")
 
-# 4. 镜像源交互选择
+# 5. 镜像源交互选择
 echo ""
 echo "------------------------------------------------------------------"
 echo -e "${BOLD}【第二步】选择 Docker 镜像加速源${NC}"
@@ -145,56 +186,155 @@ MIRROR_CHOICE=$(get_input "请选择镜像源编号 (1-5) [默认: 1]: " "1")
 
 case "$MIRROR_CHOICE" in
     1)
-        IMAGE_NAME="ghcr.1ms.run/chinachani/qq-runtime:latest"
+        IMAGE_PREFIX="ghcr.1ms.run"
         IMAGE_DESC="ghcr.1ms.run (国内毫秒级高速)"
         ;;
     2)
-        IMAGE_NAME="ghcr.nju.edu.cn/chinachani/qq-runtime:latest"
-        IMAGE_DESC="ghcr.nju.edu.cn (南京大学镜像)"
+        IMAGE_PREFIX="ghcr.nju.edu.cn"
+        IMAGE_DESC="ghcr.nju.edu.cn (南京大学开源镜像站)"
         ;;
     3)
-        IMAGE_NAME="ghcr.milu.moe/chinachani/qq-runtime:latest"
+        IMAGE_PREFIX="ghcr.milu.moe"
         IMAGE_DESC="ghcr.milu.moe (麋鹿社区加速)"
         ;;
     4)
-        IMAGE_NAME="docker.m.daocloud.io/ghcr.io/chinachani/qq-runtime:latest"
+        IMAGE_PREFIX="docker.m.daocloud.io/ghcr.io"
         IMAGE_DESC="docker.m.daocloud.io (DaoCloud 加速)"
         ;;
     5)
-        IMAGE_NAME="ghcr.io/chinachani/qq-runtime:latest"
+        IMAGE_PREFIX="ghcr.io"
         IMAGE_DESC="ghcr.io (GitHub 官方全球源)"
         ;;
     *)
-        IMAGE_NAME="ghcr.1ms.run/chinachani/qq-runtime:latest"
+        IMAGE_PREFIX="ghcr.1ms.run"
         IMAGE_DESC="ghcr.1ms.run (国内毫秒级高速)"
         ;;
 esac
-# Dashboard 控制台镜像与 Runtime 镜像同仓库发布，镜像名后缀不同
-DASHBOARD_IMAGE_NAME=$(echo "$IMAGE_NAME" | sed 's|/qq-runtime:|/qq-runtime-dashboard:|')
 
-info "已选择镜像: ${BOLD}$IMAGE_NAME${NC} ($IMAGE_DESC)"
-info "控制台镜像: ${BOLD}$DASHBOARD_IMAGE_NAME${NC}"
+# 推导全系列容器镜像地址
+IMAGE_NAME="${IMAGE_PREFIX}/chinachani/qq-runtime:latest"
+DASHBOARD_IMAGE_NAME="${IMAGE_PREFIX}/chinachani/qq-runtime-dashboard:latest"
+BILI_IMAGE_NAME="${IMAGE_PREFIX}/chinachani/bilibiliwatch-api:latest"
+DY_IMAGE_NAME="${IMAGE_PREFIX}/chinachani/douyinwatch-api:latest"
+if [ "$MIRROR_CHOICE" = "5" ]; then
+    WATERMARKS_IMAGE_NAME="ghcr.io/guillaumemeyer/watermarks-remover:latest"
+else
+    WATERMARKS_IMAGE_NAME="${IMAGE_PREFIX}/guillaumemeyer/watermarks-remover:latest"
+fi
 
-# 5. 管理员账号与安全密钥配置
+info "已选主镜像:   ${BOLD}$IMAGE_NAME${NC} ($IMAGE_DESC)"
+info "控制台镜像:   ${BOLD}$DASHBOARD_IMAGE_NAME${NC}"
+
+# 6. 服务部署档位选择
 echo ""
 echo "------------------------------------------------------------------"
-echo -e "${BOLD}【第三步】管理员初始账户配置${NC}"
+echo -e "${BOLD}【第三步】选择服务部署模式${NC}"
+echo -e " 1) ${GREEN}媒体增强版 [推荐]${NC} (Runtime + 控制台 + 伴生更新 + B站解析 + 抖音解析)"
+echo " 2) 核心最小化        (仅 Runtime + 控制台 + 伴生更新，超低内存占用，适合 1G 机器)"
+echo " 3) 全功能套件        (包含全部附加容器：核心 + B站 + 抖音 + 水印清理)"
+echo " 4) 自定义组件选择    (由您自主勾选需要启用的解析容器)"
+echo ""
+
+PROFILE_CHOICE=${INSTALL_PROFILE:-""}
+if [ -z "$PROFILE_CHOICE" ]; then
+    PROFILE_CHOICE=$(get_input "请选择部署模式 (1-4) [默认: 1]: " "1")
+fi
+
+ENABLE_BILI=false
+ENABLE_DY=false
+ENABLE_WATERMARKS=false
+
+case "$PROFILE_CHOICE" in
+    1)
+        ENABLE_BILI=true
+        ENABLE_DY=true
+        ENABLE_WATERMARKS=false
+        PROFILE_NAME="媒体增强版 (核心 + B站解析 + 抖音解析)"
+        ;;
+    2)
+        ENABLE_BILI=false
+        ENABLE_DY=false
+        ENABLE_WATERMARKS=false
+        PROFILE_NAME="核心最小化 (仅基础核心与控制台)"
+        ;;
+    3)
+        ENABLE_BILI=true
+        ENABLE_DY=true
+        ENABLE_WATERMARKS=true
+        PROFILE_NAME="全功能套件 (全量服务包含水印清理)"
+        ;;
+    4)
+        PROFILE_NAME="自定义组件组合"
+        echo ""
+        info "请配置各项附加组件开关："
+
+        BILI_INPUT=$(get_input "• 是否部署 B站音视频解析容器 (bilibiliwatch-api)？[Y/n]: " "Y")
+        case "$BILI_INPUT" in
+            [nN][oO]|[nN]) ENABLE_BILI=false ;;
+            *) ENABLE_BILI=true ;;
+        esac
+
+        DY_INPUT=$(get_input "• 是否部署 抖音分享链接解析容器 (douyinwatch-api)？[Y/n]: " "Y")
+        case "$DY_INPUT" in
+            [nN][oO]|[nN]) ENABLE_DY=false ;;
+            *) ENABLE_DY=true ;;
+        esac
+
+        WM_INPUT=$(get_input "• 是否部署 文件/视频水印清理容器 (watermarks-remover)？[y/N]: " "N")
+        case "$WM_INPUT" in
+            [yY][eE][sS]|[yY]) ENABLE_WATERMARKS=true ;;
+            *) ENABLE_WATERMARKS=false ;;
+        esac
+        ;;
+    *)
+        ENABLE_BILI=true
+        ENABLE_DY=true
+        ENABLE_WATERMARKS=false
+        PROFILE_NAME="媒体增强版 (核心 + B站解析 + 抖音解析)"
+        ;;
+esac
+
+# 允许环境变量外部覆盖
+if [ -n "$INSTALL_ENABLE_BILI" ]; then ENABLE_BILI="$INSTALL_ENABLE_BILI"; fi
+if [ -n "$INSTALL_ENABLE_DY" ]; then ENABLE_DY="$INSTALL_ENABLE_DY"; fi
+if [ -n "$INSTALL_ENABLE_WATERMARKS" ]; then ENABLE_WATERMARKS="$INSTALL_ENABLE_WATERMARKS"; fi
+
+info "已选部署档位: ${BOLD}${PROFILE_NAME}${NC}"
+info "附加服务状态: B站解析 [$( [ "$ENABLE_BILI" = true ] && echo -e "${GREEN}启用${NC}" || echo -e "${YELLOW}未启用${NC}" )] | 抖音解析 [$( [ "$ENABLE_DY" = true ] && echo -e "${GREEN}启用${NC}" || echo -e "${YELLOW}未启用${NC}" )] | 水印清理 [$( [ "$ENABLE_WATERMARKS" = true ] && echo -e "${GREEN}启用${NC}" || echo -e "${YELLOW}未启用${NC}" )]"
+
+# 7. 管理员账号与安全密钥配置
+echo ""
+echo "------------------------------------------------------------------"
+echo -e "${BOLD}【第四步】管理员初始账户配置${NC}"
 ADMIN_USER=$(get_input "请输入初始管理员用户名 [默认: admin]: " "admin")
 
 # 自动生成 16 位高强度安全密码
 AUTO_GEN_PASS=$(tr -dc 'A-Za-z0-9!@#%^&*' </dev/urandom | head -c 16 2>/dev/null || openssl rand -base64 12 2>/dev/null || echo "QqRuntime@2026")
 ADMIN_PASS=$(get_input "请输入管理员初始密码 [默认自动随机高强度密码]: " "$AUTO_GEN_PASS")
 
-# 强随机 Master Key 与 Updater Token
+# 强随机 Master Key 与通信 Token
 MASTER_KEY=$(openssl rand -hex 32 2>/dev/null || head -c 32 /dev/urandom | od -An -tx1 | tr -d ' \n' 2>/dev/null || tr -dc 'a-f0-9' </dev/urandom | head -c 64)
 UPDATER_TOKEN=$(openssl rand -hex 16 2>/dev/null || head -c 16 /dev/urandom | od -An -tx1 | tr -d ' \n' 2>/dev/null || tr -dc 'a-f0-9' </dev/urandom | head -c 32)
+BILI_TOKEN=$(openssl rand -hex 16 2>/dev/null || head -c 16 /dev/urandom | od -An -tx1 | tr -d ' \n' 2>/dev/null || tr -dc 'a-f0-9' </dev/urandom | head -c 32)
+DY_TOKEN=$(openssl rand -hex 16 2>/dev/null || head -c 16 /dev/urandom | od -An -tx1 | tr -d ' \n' 2>/dev/null || tr -dc 'a-f0-9' </dev/urandom | head -c 32)
+WATERMARKS_TOKEN=$(openssl rand -hex 16 2>/dev/null || head -c 16 /dev/urandom | od -An -tx1 | tr -d ' \n' 2>/dev/null || tr -dc 'a-f0-9' </dev/urandom | head -c 32)
 
-# 6. 创建目录并写入配置
+# 8. 创建目录并写入配置
 info "正在初始化安装目录: $INSTALL_DIR"
-$SUDO_CMD mkdir -p "$INSTALL_DIR"
-$SUDO_CMD mkdir -p "$INSTALL_DIR/data"
-if [ "$(id -u)" -ne 0 ] && [ -n "$SUDO_CMD" ]; then
-    $SUDO_CMD chown -R "$(id -u):$(id -g)" "$INSTALL_DIR"
+PARENT_DIR="$(dirname "$INSTALL_DIR" 2>/dev/null || echo "")"
+if [ -w "$INSTALL_DIR" ] || { [ ! -e "$INSTALL_DIR" ] && [ -w "$PARENT_DIR" ]; }; then
+    mkdir -p "$INSTALL_DIR"
+    mkdir -p "$INSTALL_DIR/data"
+    if [ "$ENABLE_BILI" = true ]; then mkdir -p "$INSTALL_DIR/data/bilibili"; fi
+    if [ "$ENABLE_DY" = true ]; then mkdir -p "$INSTALL_DIR/data/douyin"; fi
+else
+    $SUDO_CMD mkdir -p "$INSTALL_DIR"
+    $SUDO_CMD mkdir -p "$INSTALL_DIR/data"
+    if [ "$ENABLE_BILI" = true ]; then $SUDO_CMD mkdir -p "$INSTALL_DIR/data/bilibili"; fi
+    if [ "$ENABLE_DY" = true ]; then $SUDO_CMD mkdir -p "$INSTALL_DIR/data/douyin"; fi
+    if [ "$(id -u)" -ne 0 ] && [ -n "$SUDO_CMD" ]; then
+        $SUDO_CMD chown -R "$(id -u):$(id -g)" "$INSTALL_DIR"
+    fi
 fi
 
 cd "$INSTALL_DIR"
@@ -228,6 +368,36 @@ RUNTIME_DASHBOARD_URL=http://dashboard:3000
 # 伴生更新服务安全通信 Token
 RUNTIME_UPDATER_URL=http://updater:8080/v1/update
 RUNTIME_UPDATER_TOKEN=${UPDATER_TOKEN}
+EOF
+
+# 按需写入附加解析服务配置（内部容器网络直连，无需向外暴露端口）
+if [ "$ENABLE_BILI" = true ]; then
+    cat >> .env << EOF
+
+# B站音视频解析服务 (独立 sidecar 容器网络)
+BILI_VIDEO_API_BASE_URL=http://bilibiliwatch:8000
+BILI_VIDEO_API_LOGIN_TOKEN=${BILI_TOKEN}
+EOF
+fi
+
+if [ "$ENABLE_DY" = true ]; then
+    cat >> .env << EOF
+
+# 抖音音视频解析服务 (独立 sidecar 容器网络)
+DY_DOUYIN_API_BASE_URL=http://douyinwatch:8001
+DY_DOUYIN_API_TOKEN=${DY_TOKEN}
+EOF
+fi
+
+if [ "$ENABLE_WATERMARKS" = true ]; then
+    cat >> .env << EOF
+
+# 水印清理服务 Token
+WATERMARKS_SERVICE_TOKEN=${WATERMARKS_TOKEN}
+EOF
+fi
+
+cat >> .env << EOF
 
 # 插件沙箱默认策略
 RUNTIME_PLUGIN_SANDBOX_ENABLED=true
@@ -309,14 +479,60 @@ services:
       WATCHTOWER_LABEL_ENABLE: "true"
     expose:
       - "8080"
+EOF
+
+if [ "$ENABLE_BILI" = true ]; then
+    cat >> compose.yaml << EOF
+
+  bilibiliwatch:
+    # B站音视频解析独立 sidecar 服务（FastAPI 端口 8000）
+    image: ${BILI_IMAGE_NAME}
+    container_name: qq-runtime-bilibili
+    environment:
+      LOGIN_TOKEN: ${BILI_TOKEN}
+      API_TOKEN: ${BILI_TOKEN}
+      CONFIG_FILE: /app/data/config.json
+      TZ: Asia/Shanghai
+    volumes:
+      - ./data/bilibili:/app/data
+    expose:
+      - "8000"
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+EOF
+fi
+
+if [ "$ENABLE_DY" = true ]; then
+    cat >> compose.yaml << EOF
+
+  douyinwatch:
+    # 抖音分享解析独立 sidecar 服务（FastAPI 端口 8001）
+    image: ${DY_IMAGE_NAME}
+    container_name: qq-runtime-douyin
+    environment:
+      API_TOKEN: ${DY_TOKEN}
+      DATA_DIR: /data
+      TZ: Asia/Shanghai
+    volumes:
+      - ./data/douyin:/data
+    expose:
+      - "8001"
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+EOF
+fi
+
+if [ "$ENABLE_WATERMARKS" = true ]; then
+    cat >> compose.yaml << EOF
 
   watermarks-remover:
-    # 水印清理 sidecar（上游官方镜像，内置 exiftool/qpdf/ghostscript/ffmpeg）。
-    # Runtime 水印插件通过 RUNTIME_DASHBOARD_URL 同网络访问 http://watermarks-remover:8765。
-    image: ghcr.io/guillaumemeyer/watermarks-remover:latest
+    # 水印清理 sidecar（上游官方镜像，内置 exiftool/qpdf/ghostscript/ffmpeg）
+    image: ${WATERMARKS_IMAGE_NAME}
     container_name: qq-runtime-watermarks
     environment:
-      WATERMARKS_SERVER_API_KEY: ${UPDATER_TOKEN}
+      WATERMARKS_SERVER_API_KEY: ${WATERMARKS_TOKEN}
     expose:
       - "8765"
     read_only: true
@@ -328,38 +544,62 @@ services:
       - ALL
     restart: unless-stopped
 EOF
-
-# 水印服务 Token：复用安装期生成的随机 Token，同时写入 .env 供 Runtime 读取
-WATERMARKS_TOKEN=${UPDATER_TOKEN}
-sed -i "s|^# 插件沙箱默认策略|WATERMARKS_SERVICE_TOKEN=${WATERMARKS_TOKEN}\n\n# 插件沙箱默认策略|" .env
-grep -q "^WATERMARKS_SERVICE_TOKEN=" .env || printf '\n# 水印清理服务 Token\nWATERMARKS_SERVICE_TOKEN=%s\n' "${WATERMARKS_TOKEN}" >> .env
-
-# 7. 拉取镜像并启动
-echo ""
-echo "------------------------------------------------------------------"
-echo -e "${BOLD}【第四步】拉取镜像并启动服务${NC}"
-info "正在拉取镜像: $IMAGE_NAME ..."
-$COMPOSE_CMD pull runtime updater || error "镜像拉取失败，请检查网络连接或更换镜像加速源后重试"
-
-# 水印清理 sidecar 拉取失败不中断安装（该插件默认关闭，可稍后补拉）
-if ! $COMPOSE_CMD pull watermarks-remover 2>/dev/null; then
-    warn "水印清理服务镜像拉取失败，可稍后执行: ${COMPOSE_CMD} pull watermarks-remover && ${COMPOSE_CMD} up -d"
 fi
 
+# 9. 拉取镜像并启动
+echo ""
+echo "------------------------------------------------------------------"
+echo -e "${BOLD}【第五步】拉取镜像并启动服务${NC}"
+info "正在拉取核心镜像: $IMAGE_NAME ..."
+$COMPOSE_CMD pull runtime updater || error "核心镜像拉取失败，请检查网络连接或更换镜像加速源后重试"
+
+SCALE_ARGS=""
+
 # dashboard 镜像随正式版本发布；拉取失败时降级为旧版 legacy 控制台而不是中断安装
-SCALE_DASHBOARD=""
 if $COMPOSE_CMD pull dashboard 2>/dev/null; then
     info "新版控制台镜像拉取成功"
 else
     warn "新版控制台镜像 ($DASHBOARD_IMAGE_NAME) 拉取失败，本次将使用旧版 legacy 控制台"
     warn "可稍后执行: ${COMPOSE_CMD} pull dashboard && ${COMPOSE_CMD} up -d 切换到新版控制台"
-    SCALE_DASHBOARD="--scale dashboard=0"
+    SCALE_ARGS="$SCALE_ARGS --scale dashboard=0"
+fi
+
+if [ "$ENABLE_BILI" = true ]; then
+    info "正在拉取 B站解析服务镜像: $BILI_IMAGE_NAME ..."
+    if $COMPOSE_CMD pull bilibiliwatch 2>/dev/null; then
+        info "B站解析服务镜像拉取成功"
+    else
+        warn "B站解析镜像拉取失败或尚未构建完成，该服务将暂时跳过启动"
+        warn "可稍后执行: ${COMPOSE_CMD} pull bilibiliwatch && ${COMPOSE_CMD} up -d"
+        SCALE_ARGS="$SCALE_ARGS --scale bilibiliwatch=0"
+    fi
+fi
+
+if [ "$ENABLE_DY" = true ]; then
+    info "正在拉取 抖音解析服务镜像: $DY_IMAGE_NAME ..."
+    if $COMPOSE_CMD pull douyinwatch 2>/dev/null; then
+        info "抖音解析服务镜像拉取成功"
+    else
+        warn "抖音解析镜像拉取失败或尚未构建完成，该服务将暂时跳过启动"
+        warn "可稍后执行: ${COMPOSE_CMD} pull douyinwatch && ${COMPOSE_CMD} up -d"
+        SCALE_ARGS="$SCALE_ARGS --scale douyinwatch=0"
+    fi
+fi
+
+if [ "$ENABLE_WATERMARKS" = true ]; then
+    info "正在拉取 水印清理服务镜像: $WATERMARKS_IMAGE_NAME ..."
+    if $COMPOSE_CMD pull watermarks-remover 2>/dev/null; then
+        info "水印清理服务镜像拉取成功"
+    else
+        warn "水印清理服务镜像拉取失败，可稍后执行: ${COMPOSE_CMD} pull watermarks-remover && ${COMPOSE_CMD} up -d"
+        SCALE_ARGS="$SCALE_ARGS --scale watermarks-remover=0"
+    fi
 fi
 
 info "正在启动容器集群..."
-$COMPOSE_CMD up -d $SCALE_DASHBOARD || error "容器启动失败，请检查 docker 日志"
+$COMPOSE_CMD up -d $SCALE_ARGS || error "容器启动失败，请检查 docker 日志"
 
-# 8. 健康检查
+# 10. 健康检查
 info "等待服务就绪中..."
 HEALTHY=false
 for i in $(seq 1 30); do
@@ -382,7 +622,7 @@ fi
 PUBLIC_IP=$(curl -s4 -m 3 ifconfig.me 2>/dev/null || curl -s4 -m 3 ip.sb 2>/dev/null || echo "服务器公网IP")
 LOCAL_IP=$(ip -4 addr show scope global 2>/dev/null | grep inet | awk '{print $2}' | cut -d/ -f1 | head -n 1 || hostname -I 2>/dev/null | awk '{print $1}' || echo "127.0.0.1")
 
-# 9. 打印安装成功卡片
+# 11. 打印安装成功卡片
 echo ""
 echo "=================================================================="
 echo -e "${GREEN}${BOLD}🎉 QQ Runtime 部署成功！${NC}"
@@ -391,6 +631,12 @@ echo -e " 🌐 ${BOLD}控制台访问地址:${NC}"
 echo -e "    - 公网访问: ${CYAN}http://${PUBLIC_IP}:${INSTALL_PORT}${NC}"
 echo -e "    - 内网访问: ${CYAN}http://${LOCAL_IP}:${INSTALL_PORT}${NC}"
 echo -e "    - 本地访问: ${CYAN}http://127.0.0.1:${INSTALL_PORT}${NC}"
+echo ""
+echo -e " 📦 ${BOLD}服务部署模式:${NC} ${BOLD}${PROFILE_NAME}${NC}"
+echo -e "    - 核心引擎: ${GREEN}[正常运行]${NC} (Runtime + Next.js 控制台 + 伴生自动更新)"
+echo -e "    - B站解析:  $( [ "$ENABLE_BILI" = true ] && echo -e "${GREEN}[已启用]${NC} (bilibiliwatch-api 独立容器)" || echo -e "${YELLOW}[未启用]${NC}" )"
+echo -e "    - 抖音解析: $( [ "$ENABLE_DY" = true ] && echo -e "${GREEN}[已启用]${NC} (douyinwatch-api 独立容器)" || echo -e "${YELLOW}[未启用]${NC}" )"
+echo -e "    - 水印清理: $( [ "$ENABLE_WATERMARKS" = true ] && echo -e "${GREEN}[已启用]${NC} (watermarks-remover 独立容器)" || echo -e "${YELLOW}[未启用]${NC}" )"
 echo ""
 echo -e " 🔑 ${BOLD}管理员登录凭证:${NC}"
 echo -e "    - 初始用户名: ${YELLOW}${ADMIN_USER}${NC}"
