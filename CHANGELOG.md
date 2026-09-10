@@ -3,6 +3,14 @@
 格式参考 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)；
 版本号遵循语义化版本。买家通过管理台「更新检查」或本页获取新版本信息。
 
+## [0.6.20] - 2026-09-10
+
+### 绘图积分统一：权威账本单源化
+
+- **余额来源统一**：网页后台用户列表与积分调整统一读取 `point_accounts` 权威账本（point_type=drawimg）；credits.json 多份历史副本（含套娃路径的 45/20/5 矛盾值）只用于发现用户存在，不再参与余额计算。
+- **写路径收敛**：后台调整积分不再向 5 个路径散写 credits.json 副本（正是副本失步导致"后台改了、面板不变"的根因），同时删除直接改写 SQLite 的旁路——全部经 PointsService 账本（带 operation_id 幂等与流水审计）。
+- **部署侧清理**：219 上全部历史 credits.json 副本已备份后删除（备份在服务器 /root/wm-cleanup-backup）。
+
 ## [0.6.19] - 2026-09-10
 
 ### SteamWatch 1.28 移植补全：二次确认、图片渲染与按钮断行
