@@ -115,6 +115,33 @@ if [ "$TOTAL_MEM_MB" -gt 0 ] && [ "$TOTAL_MEM_MB" -lt 1500 ]; then
     warn "强烈建议在后续步骤中选择【2) 核心最小化】模式，或在部署前为服务器配置 1~2GB Swap 虚拟内存，以防 OOM。"
 fi
 
+# 磁盘剩余空间硬性检测
+if [ "$DISK_AVAIL_GB" != "未知" ]; then
+    if [ "$DISK_AVAIL_GB" -lt 2 ]; then
+        error "根分区可用磁盘空间仅剩 ${DISK_AVAIL_GB} GB（不足 2 GB）！拉取与解压 Docker 镜像可能会耗尽磁盘空间，请先清理磁盘后重试。"
+    elif [ "$DISK_AVAIL_GB" -lt 5 ]; then
+        warn "⚠️  根分区可用磁盘空间为 ${DISK_AVAIL_GB} GB（较为紧张），建议部署后定期执行 docker system prune 清理构建缓存。"
+    fi
+fi
+
+# 网络与 DNS 解析健康连通性检测
+info "正在探测网络与 DNS 域名解析连通性..."
+DNS_PROBE_SUCCESS=false
+for probe_domain in "ghcr.1ms.run" "ghcr.nju.edu.cn" "ghcr.io" "github.com"; do
+    if command -v getent >/dev/null 2>&1 && getent ahosts "$probe_domain" >/dev/null 2>&1; then
+        DNS_PROBE_SUCCESS=true
+        break
+    elif command -v nslookup >/dev/null 2>&1 && nslookup "$probe_domain" >/dev/null 2>&1; then
+        DNS_PROBE_SUCCESS=true
+        break
+    fi
+done
+if [ "$DNS_PROBE_SUCCESS" = true ]; then
+    success "DNS 域名解析与网络探测正常"
+else
+    warn "⚠️  未能成功解析公网镜像源域名，请检查服务器网络或 /etc/resolv.conf 中的 nameserver 配置（推荐 223.5.5.5 或 119.29.29.29）"
+fi
+
 # 3. Docker 与 Docker Compose 检测
 info "正在检测 Docker 运行环境..."
 if ! command -v docker >/dev/null 2>&1; then
@@ -170,7 +197,60 @@ if [ "$(id -u)" -ne 0 ] && [ -z "$SUDO_CMD" ]; then
 fi
 
 INSTALL_DIR=$(get_input "请输入安装目录路径 [默认: ${DEFAULT_INSTALL_DIR}]: " "$DEFAULT_INSTALL_DIR")
-INSTALL_PORT=$(get_input "请输入管理台外部访问端口 [默认: ${INSTALL_PORT:-8080}]: " "${INSTALL_PORT:-8080}")
+
+# 端口可用性与冲突检测函数
+check_port_occupied() {
+    local p="$1"
+    if command -v ss >/dev/null 2>&1; then
+        ss -tuln 2>/dev/null | grep -qE "(:|\])${p}\b"
+    elif command -v netstat >/dev/null 2>&1; then
+        netstat -tuln 2>/dev/null | grep -qE "(:|\])${p}\b"
+    elif command -v lsof >/dev/null 2>&1; then
+        lsof -iTCP:"$p" -sTCP:LISTEN >/dev/null 2>&1
+    else
+        (echo >/dev/tcp/127.0.0.1/"$p") >/dev/null 2>&1
+    fi
+}
+
+DEFAULT_PORT=${INSTALL_PORT:-8080}
+while true; do
+    INSTALL_PORT=$(get_input "请输入管理台外部访问端口 [默认: ${DEFAULT_PORT}]: " "$DEFAULT_PORT")
+    if [[ ! "$INSTALL_PORT" =~ ^[0-9]+$ ]] || [ "$INSTALL_PORT" -lt 1 ] || [ "$INSTALL_PORT" -gt 65535 ]; then
+        warn "端口必须是 1~65535 之间的有效端口号，请重新输入"
+        continue
+    fi
+    if check_port_occupied "$INSTALL_PORT"; then
+        warn "⚠️  检测到端口 ${INSTALL_PORT} 已处于监听状态（可能已被 Nginx/Apache/其他容器占用）！"
+        OCCUPIED_INFO=""
+        if command -v ss >/dev/null 2>&1; then
+            OCCUPIED_INFO=$(ss -tulnp 2>/dev/null | grep -E "(:|\])${INSTALL_PORT}\b" | head -n 1 || true)
+        elif command -v lsof >/dev/null 2>&1; then
+            OCCUPIED_INFO=$(lsof -iTCP:"$INSTALL_PORT" -sTCP:LISTEN 2>/dev/null | tail -n +2 | head -n 1 || true)
+        fi
+        if [ -n "$OCCUPIED_INFO" ]; then
+            warn "   占用进程信息: $OCCUPIED_INFO"
+        fi
+        warn "如果端口冲突，Docker 容器将无法正常绑定外部访问端口。"
+        CONFIRM_PORT=$(get_input "是否仍要强制使用端口 ${INSTALL_PORT}？[y/N]: " "N")
+        case "$CONFIRM_PORT" in
+            [yY][eE][sS]|[yY]) break ;;
+            *) DEFAULT_PORT="8081"; continue ;;
+        esac
+    else
+        success "端口 ${INSTALL_PORT} 检测通过（空闲可用）"
+        break
+    fi
+done
+
+# 检测防火墙规则并给出放行指引
+FIREWALL_HINT=""
+if command -v ufw >/dev/null 2>&1 && $SUDO_CMD ufw status 2>/dev/null | grep -q "Status: active"; then
+    FIREWALL_HINT="sudo ufw allow ${INSTALL_PORT}/tcp"
+    info "检测到系统启用了 UFW 防火墙。若安装后外部无法访问，请执行: ${BOLD}${FIREWALL_HINT}${NC}"
+elif command -v firewall-cmd >/dev/null 2>&1 && systemctl is-active firewalld >/dev/null 2>&1; then
+    FIREWALL_HINT="sudo firewall-cmd --add-port=${INSTALL_PORT}/tcp --permanent && sudo firewall-cmd --reload"
+    info "检测到系统启用了 firewalld 防火墙。若安装后外部无法访问，请执行: ${BOLD}${FIREWALL_HINT}${NC}"
+fi
 
 # 5. 镜像源交互选择
 echo ""
@@ -311,6 +391,11 @@ ADMIN_USER=$(get_input "请输入初始管理员用户名 [默认: admin]: " "ad
 # 自动生成 16 位高强度安全密码
 AUTO_GEN_PASS=$(tr -dc 'A-Za-z0-9!@#%^&*' </dev/urandom | head -c 16 2>/dev/null || openssl rand -base64 12 2>/dev/null || echo "QqRuntime@2026")
 ADMIN_PASS=$(get_input "请输入管理员初始密码 [默认自动随机高强度密码]: " "$AUTO_GEN_PASS")
+
+if [ "${#ADMIN_PASS}" -lt 8 ]; then
+    warn "⚠️  您输入的管理员密码长度小于 8 位，密码强度较弱，容易遭受字典暴力破解！"
+    warn "建议首次登录管理台后尽快在【系统与管理 -> 账户安全】中修改为更强密码。"
+fi
 
 # 强随机 Master Key 与通信 Token
 MASTER_KEY=$(openssl rand -hex 32 2>/dev/null || head -c 32 /dev/urandom | od -An -tx1 | tr -d ' \n' 2>/dev/null || tr -dc 'a-f0-9' </dev/urandom | head -c 64)
@@ -643,6 +728,12 @@ echo -e "    - 初始用户名: ${YELLOW}${ADMIN_USER}${NC}"
 echo -e "    - 初始密码:   ${YELLOW}${ADMIN_PASS}${NC}"
 echo -e "    - 主密钥:     ${PURPLE}${MASTER_KEY}${NC}"
 echo ""
+if [ -n "$FIREWALL_HINT" ]; then
+    echo -e " 🛡️  ${BOLD}防火墙放行提示:${NC}"
+    echo -e "    - 本机防火墙指令: ${YELLOW}${FIREWALL_HINT}${NC}"
+    echo -e "    - 云服务器安全组: 请确认已在阿里云/腾讯云/华为云等控制台【安全组】放行 TCP ${INSTALL_PORT} 入方向端口"
+    echo ""
+fi
 echo -e " 📁 ${BOLD}部署目录与数据:${NC}"
 echo -e "    - 安装目录:   ${INSTALL_DIR}"
 echo -e "    - 配置文件:   ${INSTALL_DIR}/.env"
