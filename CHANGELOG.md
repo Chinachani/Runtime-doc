@@ -3,6 +3,21 @@
 格式参考 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)；
 版本号遵循语义化版本。买家通过管理台「更新检查」或本页获取新版本信息。
 
+## [0.8.3] - 2026-09-11
+
+### 问题修复：C2C 单聊底栏校验友好化、远端快照冲突闭环与 CI 流水线并发竞争修复
+
+- **C2C 底栏参数校验与字数提示优化**：
+  - 彻底优化 `runtime/panels.py` 中 `validate_c2c_menu` 校验，拆分排查菜单名称为空、名称字符字节长度超限（一级菜单最多 10 字符/5 汉字，二级菜单最多 14 字符/7 汉字）、类型无效及缺少内容等场景，提供精确定位到项序与具体字段的友好错误信息，消除笼统的“菜单名称或类型无效”报错；
+  - 控制台 C2C 底栏编辑器增加即时字节数计算与汉字限制提示，超出上限即时红色高亮警告，并在保存前提供前置表单检查。
+- **C2C 底栏远端快照冲突与强制覆盖闭环**：
+  - 新增 `POST /api/qq/c2c-menu/remote/adopt` 接口，支持一键读取 QQ 远端底栏配置并同步更新本地草稿与 `remote_snapshot`，消除本地快照脱节问题；
+  - `POST /api/qq/c2c-menu/apply` 接口支持 `force: true` 强制覆盖模式；当检测到远端已被外部修改（HTTP 409）时，控制台弹出冲突处理对话框，引导用户选择「读取 QQ 端并同步快照」或「强制覆盖发布」；
+  - 完善 `storage.py` 中 `set_c2c_menu_remote_state` 的 UPSERT 逻辑，并在初次未配置菜单时安全回退，防止接口抛出异常。
+- **CI 流水线并发创建 Release 竞争与日志误报修复**：
+  - 修复推送 Tag 时 `build-apk.yml` 与 `release-image.yml` 并发向 `Chinachani/Runtime-doc` 创建 Release 导致的 HTTP 422 竞态冲突，在 `tools/create_doc_release.py` 与 `tools/upload_doc_asset.py` 中增加自动退避重试获取 release_id 并转为 PATCH 的重试机制；
+  - 修复 `tools/create_doc_release.py` 中错误日志输出打印历史 404 响应体的变量引用 Bug。
+
 ## [0.8.1] - 2026-09-11
 
 ### 问题修复与发布加固：文档发布流水线非 ASCII 路径转义修复
