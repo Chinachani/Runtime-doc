@@ -3,6 +3,13 @@
 格式参考 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)；
 版本号遵循语义化版本。买家通过管理台「更新检查」或本页获取新版本信息。
 
+## [0.8.1] - 2026-09-11
+
+### 问题修复与发布加固：文档发布流水线非 ASCII 路径转义修复
+
+- **文档发布与同步流水线 URL 转义修复**：
+  - 修复因中文文件名（`docs/插件开发指南.md`、`docs/插件上架指南.md`）未作 RFC 标准 URL 转义导致的 `UnicodeEncodeError`；在 `create_doc_release.py`、`sync_plugins_to_doc.py` 与 `upload_doc_asset.py` 中引入完整的 `urllib.parse.quote` 编码防护。
+
 ## [0.8.0] - 2026-09-11
 
 ### 架构演进：第三方插件开放生态、控制台一键提审与自动化审查流水线
