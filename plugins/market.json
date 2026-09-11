@@ -1,0 +1,54 @@
+{
+  "version": "1.0.0",
+  "updated_at": "2026-09-11",
+  "plugins": [
+    {
+      "id": "plugin.drawimg.service",
+      "name": "AI 绘图服务",
+      "version": "0.1.2",
+      "author": "Chinachani",
+      "category": "ai",
+      "icon": "🎨",
+      "description": "基于 Stable Diffusion 与 DALL-E 的 AI 智能绘图服务，支持文生图、单图/多图改图与积分管理",
+      "min_runtime_version": "0.7.0",
+      "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.drawimg.service.zip",
+      "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.drawimg.service.zip",
+      "sha256": "ed8f407a66e107e80b40e8ee3e0f1b2b51be682aa365ae85beb410a390578c34",
+      "permissions": ["network", "chat.send", "points.manage"],
+      "size_bytes": 53583,
+      "tags": ["AI", "生图", "绘画", "积分"]
+    },
+    {
+      "id": "plugin.word2ppt",
+      "name": "Word 转 PPT",
+      "version": "0.31.0",
+      "author": "Chinachani",
+      "category": "utility",
+      "icon": "📊",
+      "description": "智能文档解析与演示文稿排版插件，支持 Word 文档一键转 PPT、大纲提炼与多种精美模板",
+      "min_runtime_version": "0.7.0",
+      "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.word2ppt.zip",
+      "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.word2ppt.zip",
+      "sha256": "38625540849c419c6dc668c08a3ca414636a07edda91299a5f5bff2ede6c35ed",
+      "permissions": ["network", "chat.send", "points.manage"],
+      "size_bytes": 42505,
+      "tags": ["办公", "文档", "PPT", "效率"]
+    },
+    {
+      "id": "plugin.demo.guide",
+      "name": "开发指南演示",
+      "version": "1.2.0",
+      "author": "Chinachani",
+      "category": "tools",
+      "icon": "📖",
+      "description": "官方外部插件规范完整参考实现，演示沙箱隔离、标准命令注册、Markdown 卡片交互与独立页面数据通信",
+      "min_runtime_version": "0.7.0",
+      "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.demo.guide.zip",
+      "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.demo.guide.zip",
+      "sha256": "d32679ca53d5f9939aed271d3099590136a12b9ac27e3083115990cbba3acb17",
+      "permissions": ["plugins.manage"],
+      "size_bytes": 11904,
+      "tags": ["开发", "演示", "指南", "模板"]
+    }
+  ]
+}
