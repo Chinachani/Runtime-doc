@@ -49,6 +49,22 @@
       "permissions": ["plugins.manage"],
       "size_bytes": 11904,
       "tags": ["开发", "演示", "指南", "模板"]
+    },
+    {
+      "id": "plugin.bili",
+      "name": "B站解析",
+      "version": "1.3.0",
+      "author": "Chinachani",
+      "category": "media",
+      "icon": "📺",
+      "description": "B站音视频解析与下载，支持视频下载、音频提取、超长音频自动降级普通文件发送及卡片交互",
+      "min_runtime_version": "0.12.0",
+      "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.bili.zip",
+      "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.bili.zip",
+      "sha256": "2774c9d226658fad6d5b04a8cce533797f838470083f7225218567c6c8c54497",
+      "permissions": ["network", "chat.send"],
+      "size_bytes": 13543,
+      "tags": ["B站", "视频", "音频", "解析", "下载"]
     }
   ]
 }
