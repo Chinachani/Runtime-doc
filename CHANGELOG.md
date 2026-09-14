@@ -3,6 +3,20 @@
 格式参考 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)；
 版本号遵循语义化版本。买家通过管理台「更新检查」或本页获取新版本信息。
 
+## [1.2.0] - 2026-09-14
+
+### 全外置插件生态上架官方市场、沙箱大载荷通信与水印图片检测修复、框架 1.2.0 里程碑发版
+
+- **框架版本 1.2.0 里程碑发布**：
+  - 核心运行时协议与外置插件沙箱体系全面成型，所有多媒体、AI、工具类插件全面完成外部插件沙箱化与独立生态解耦；
+  - 官方插件市场（`market.json`）直连 GitHub 主仓库并支持内网镜像与本地离线预装双通道。
+- **水印清理控制台图片上传检测与沙箱大载荷协议修复（plugin.watermarks 1.3.3 与 runtime/plugin_sandbox.py）**：
+  - **沙箱消息上限提升与自动临时文件旁路（Offloading）**：将默认沙箱单行消息上限从 1MB 提升至 32MB（`33_554_432`），并在 `runtime/web.py` 增加大 Base64 载荷自动转存插件 `temp/` 临时文件的旁路机制，彻底解决控制台上传高分辨率图片时触发 `Plugin protocol payload exceeds the size limit` 的问题；
+  - **图片检测弹窗响应解包与 20MB 上限提示**：前端修复 Action RPC 的嵌套解包（`res.result`），检测完成即刻弹出详细 C2PA / AIGC / 盲水印报告，并增加 20MB 超限预检；
+  - **数据兼容与单测恢复**：恢复 `page_data` 接口返回中的 `"records"` 列表，补充 `inspect_upload` 双路径单元测试。
+- **全部外置插件市场清单与仓库直连规则对齐**：
+  - 全量 11 款官方插件（`plugin.bili` 1.7.2、`plugin.dy` 0.6.5、`plugin.sw` 1.3.5、`plugin.watermarks` 1.3.3、`plugin.word2ppt` 0.33.3、`plugin.drawimg` 1.1.0、`plugin.drawimg.service` 0.3.2、`plugin.meme` 0.1.5、`plugin.na` 1.0.1、`plugin.selfauth` 1.2.0、`plugin.demo.guide` 1.3.0）重新规范化打包，校验哈希与文件体积对齐，下载地址直连本主仓库并配置国内高速镜像。
+
 ## [0.12.1] - 2026-09-12
 
 ### 架构演进与体验优化：B 站音视频解析独立外部插件试点（plugin.bili 1.3.0）与运行时网关富媒体能力对齐
