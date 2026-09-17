@@ -5,7 +5,7 @@
     {
       "id": "plugin.drawimg.service",
       "name": "AI 绘图服务",
-      "version": "0.3.3",
+      "version": "0.4.0",
       "author": "Chinachani",
       "category": "ai",
       "icon": "🎨",
@@ -13,13 +13,13 @@
       "min_runtime_version": "0.7.0",
       "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.drawimg.service.zip",
       "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.drawimg.service.zip",
-      "sha256": "f98cfac1cb8cddbc1bbc6a3a0906355057cc32c896d237c77cce304c50949c2c",
+      "sha256": "e6b027f37de74b92e76d861f25c19079206e7864ac215f0a933f1e0a7c33604b",
       "permissions": [
         "network",
         "chat.send",
         "points.manage"
       ],
-      "size_bytes": 63118,
+      "size_bytes": 64063,
       "tags": [
         "AI",
         "生图",
@@ -30,7 +30,7 @@
     {
       "id": "plugin.drawimg",
       "name": "AI 绘图助手",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "author": "Chinachani",
       "category": "ai",
       "icon": "🖌️",
@@ -38,13 +38,13 @@
       "min_runtime_version": "0.15.0",
       "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.drawimg.zip",
       "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.drawimg.zip",
-      "sha256": "20d46923c362f279bc98d408c184a7e5c6d9a5a2cc01bfc6a7742803f22fdd22",
+      "sha256": "08a2c464484687ccb4d2f3a586f7205231f9d924bc9b9871b3624718bda7d425",
       "permissions": [
         "network",
         "chat.send",
         "points.manage"
       ],
-      "size_bytes": 51772,
+      "size_bytes": 52068,
       "tags": [
         "AI",
         "生图",
