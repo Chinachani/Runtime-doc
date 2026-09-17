@@ -130,7 +130,7 @@
     {
       "id": "plugin.dy",
       "name": "抖音解析",
-      "version": "0.6.6",
+      "version": "0.6.7",
       "author": "Chinachani",
       "category": "media",
       "icon": "🎵",
@@ -138,12 +138,12 @@
       "min_runtime_version": "0.12.0",
       "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.dy.zip",
       "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.dy.zip",
-      "sha256": "0dacb3ad7edbaf8212f34ca98400b2ad7417310ca32de6b20d3924823c28abdb",
+      "sha256": "235d5cbb4821119e676bb62780a2eba1db945b917c3a3c0089d1f705e66ea6e0",
       "permissions": [
         "network",
         "chat.send"
       ],
-      "size_bytes": 20013,
+      "size_bytes": 20246,
       "tags": [
         "抖音",
         "视频",
