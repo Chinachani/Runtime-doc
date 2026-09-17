@@ -13,43 +13,17 @@
       "min_runtime_version": "0.7.0",
       "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.drawimg.service.zip",
       "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.drawimg.service.zip",
-      "sha256": "e6b027f37de74b92e76d861f25c19079206e7864ac215f0a933f1e0a7c33604b",
+      "sha256": "bdb2355a56569dfdc038cbeba5b9192b35bad1eac3087f5b091f0f80359b2481",
       "permissions": [
         "network",
         "chat.send",
         "points.manage"
       ],
-      "size_bytes": 64063,
+      "size_bytes": 64549,
       "tags": [
         "AI",
         "生图",
         "绘画",
-        "积分"
-      ]
-    },
-    {
-      "id": "plugin.drawimg",
-      "name": "AI 绘图助手",
-      "version": "1.2.0",
-      "author": "Chinachani",
-      "category": "ai",
-      "icon": "🖌️",
-      "description": "基于 OpenAI 兼容生图/改图 API 的沙箱外部插件，支持文生图、单图改图、多图改图、画风预设、自定义尺寸、体验积分扣减与多级充值、用户模型绑定与原生管理台集成",
-      "min_runtime_version": "0.15.0",
-      "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.drawimg.zip",
-      "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.drawimg.zip",
-      "sha256": "08a2c464484687ccb4d2f3a586f7205231f9d924bc9b9871b3624718bda7d425",
-      "permissions": [
-        "network",
-        "chat.send",
-        "points.manage"
-      ],
-      "size_bytes": 52068,
-      "tags": [
-        "AI",
-        "生图",
-        "绘画",
-        "改图",
         "积分"
       ]
     },
