@@ -1,25 +1,25 @@
 {
-  "version": "1.2.0",
-  "updated_at": "2026-09-14",
+  "version": "1.2.1",
+  "updated_at": "2026-09-17",
   "plugins": [
     {
       "id": "plugin.drawimg.service",
       "name": "AI 绘图服务",
-      "version": "0.3.2",
+      "version": "0.3.3",
       "author": "Chinachani",
       "category": "ai",
       "icon": "🎨",
       "description": "基于 Stable Diffusion 与 DALL-E 的 AI 智能绘图服务，支持免抠底图、提示词防改写、单图/多图改图与积分管理",
       "min_runtime_version": "0.7.0",
-      "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime/main/plugins/plugin.drawimg.service.zip",
-      "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime/main/plugins/plugin.drawimg.service.zip",
-      "sha256": "6490217fe41441fdab5b9bbf6d760ccc6428bbf3b0b68b457c80501be2f24eb1",
+      "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.drawimg.service.zip",
+      "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.drawimg.service.zip",
+      "sha256": "f98cfac1cb8cddbc1bbc6a3a0906355057cc32c896d237c77cce304c50949c2c",
       "permissions": [
         "network",
         "chat.send",
         "points.manage"
       ],
-      "size_bytes": 61786,
+      "size_bytes": 63118,
       "tags": [
         "AI",
         "生图",
@@ -36,8 +36,8 @@
       "icon": "🖌️",
       "description": "基于 OpenAI 兼容生图/改图 API 的沙箱外部插件，支持文生图、单图改图、多图改图、画风预设、自定义尺寸、体验积分扣减与多级充值、用户模型绑定与原生管理台集成",
       "min_runtime_version": "0.15.0",
-      "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime/main/plugins/plugin.drawimg.zip",
-      "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime/main/plugins/plugin.drawimg.zip",
+      "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.drawimg.zip",
+      "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.drawimg.zip",
       "sha256": "20d46923c362f279bc98d408c184a7e5c6d9a5a2cc01bfc6a7742803f22fdd22",
       "permissions": [
         "network",
@@ -62,8 +62,8 @@
       "icon": "📊",
       "description": "智能文档解析与演示文稿排版插件，支持 Word 文档一键转 PPT、大纲提炼与多种精美模板",
       "min_runtime_version": "0.7.0",
-      "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime/main/plugins/plugin.word2ppt.zip",
-      "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime/main/plugins/plugin.word2ppt.zip",
+      "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.word2ppt.zip",
+      "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.word2ppt.zip",
       "sha256": "d1e3ae60db72fe5f5304040e34fdfbb0d3937a246a960ea1636e414feb2d2556",
       "permissions": [
         "network",
@@ -87,8 +87,8 @@
       "icon": "📖",
       "description": "官方外部插件规范完整参考实现，演示沙箱隔离、标准命令注册、Markdown 卡片交互与原生控制台数据通信",
       "min_runtime_version": "0.7.0",
-      "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime/main/examples/plugin.demo.guide.zip",
-      "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime/main/examples/plugin.demo.guide.zip",
+      "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.demo.guide.zip",
+      "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.demo.guide.zip",
       "sha256": "cec4484087b24557acf57f11c270b5cfb58b928e7fa15ac4701f9c53f447ad54",
       "permissions": [
         "plugins.manage"
@@ -104,20 +104,20 @@
     {
       "id": "plugin.bili",
       "name": "B站解析",
-      "version": "1.7.2",
+      "version": "1.7.3",
       "author": "Chinachani",
       "category": "media",
       "icon": "📺",
       "description": "B站音视频解析与下载，支持视频下载、原生音频直连提取、音频文件以视频标题命名、与下载站双向Cookie自动同步、超长音频自动降级普通文件发送及卡片交互",
       "min_runtime_version": "0.12.0",
-      "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime/main/plugins/plugin.bili.zip",
-      "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime/main/plugins/plugin.bili.zip",
-      "sha256": "1800997591fad68e11de2c47a37db727921d065404fd9e92a70192878c89fff4",
+      "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.bili.zip",
+      "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.bili.zip",
+      "sha256": "a65ee2856d1ee1ebfd895f2c96a12b7c1cc98e301546ea90bbd1bda05826c7af",
       "permissions": [
         "network",
         "chat.send"
       ],
-      "size_bytes": 25707,
+      "size_bytes": 26751,
       "tags": [
         "B站",
         "视频",
@@ -130,20 +130,20 @@
     {
       "id": "plugin.dy",
       "name": "抖音解析",
-      "version": "0.6.5",
+      "version": "0.6.6",
       "author": "Chinachani",
       "category": "media",
       "icon": "🎵",
       "description": "抖音音视频与图集解析下载，支持视频下载、图集Markdown卡片翻页浏览、ZIP原图打包发送、音频提取及卡片交互",
       "min_runtime_version": "0.12.0",
-      "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime/main/plugins/plugin.dy.zip",
-      "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime/main/plugins/plugin.dy.zip",
-      "sha256": "ad6c23a924d48f33e73db70d57e95cf0e84930e1d90928c7bdbac0df3437eaf1",
+      "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.dy.zip",
+      "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.dy.zip",
+      "sha256": "0dacb3ad7edbaf8212f34ca98400b2ad7417310ca32de6b20d3924823c28abdb",
       "permissions": [
         "network",
         "chat.send"
       ],
-      "size_bytes": 19545,
+      "size_bytes": 20013,
       "tags": [
         "抖音",
         "视频",
@@ -164,8 +164,8 @@
       "icon": "🔑",
       "description": "自助授权与签到积分兑换插件，支持签到攒积分、积分兑换机器人授权、充值与订单查询",
       "min_runtime_version": "0.12.0",
-      "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime/main/plugins/plugin.selfauth.zip",
-      "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime/main/plugins/plugin.selfauth.zip",
+      "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.selfauth.zip",
+      "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.selfauth.zip",
       "sha256": "102210117ee57e7eefca98e9efecfafcef3e0097dd42350ffe7db9688c7502e7",
       "permissions": [
         "chat.read",
@@ -188,8 +188,8 @@
       "icon": "🎮",
       "description": "Steam 玩家在线与游戏状态监控，支持好友码/主页解析、多群订阅、开播/下播通知、时长评价、游戏详情与原生控制台配置",
       "min_runtime_version": "0.12.0",
-      "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime/main/plugins/plugin.sw.zip",
-      "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime/main/plugins/plugin.sw.zip",
+      "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.sw.zip",
+      "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.sw.zip",
       "sha256": "82e13ee6a367c5b33b2fd12ab124c2dcd2e9df6552a52b477a2fe0cae07afd3c",
       "permissions": [
         "network",
@@ -206,20 +206,20 @@
     {
       "id": "plugin.watermarks",
       "name": "水印清理",
-      "version": "1.3.3",
+      "version": "1.3.4",
       "author": "Chinachani",
       "category": "tools",
       "icon": "🧹",
       "description": "多媒体元数据与隐写水印检测清理插件，支持检测与擦除 EXIF、XMP、C2PA、隐写字符、双向控制符及 AI 生成元数据标记，提供完整 QQ 交互卡片与原生管理台集成",
       "min_runtime_version": "0.12.0",
-      "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime/main/plugins/plugin.watermarks.zip",
-      "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime/main/plugins/plugin.watermarks.zip",
-      "sha256": "d9dae72f73f526e301db01720c47b195ff17b5e87f103b189d78ca84a7e0354a",
+      "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.watermarks.zip",
+      "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.watermarks.zip",
+      "sha256": "7f863f71e1782ba4fe848f035f2375dd84352e46b7422634f460d630925449b3",
       "permissions": [
         "network",
         "chat.send"
       ],
-      "size_bytes": 19968,
+      "size_bytes": 20023,
       "tags": [
         "水印",
         "元数据",
@@ -238,8 +238,8 @@
       "icon": "🎭",
       "description": "MemeCrafters 表情包生成：/meme list 模板列表、模糊搜索、别名与停用管理、头像与引用图兜底",
       "min_runtime_version": "0.15.0",
-      "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime/main/plugins/plugin.meme.zip",
-      "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime/main/plugins/plugin.meme.zip",
+      "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.meme.zip",
+      "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.meme.zip",
       "sha256": "8358bc2d0376aa1b56fb86512048c4c0a35d9d0c2d1caabd4f72130b348347dd",
       "permissions": [
         "network",
@@ -262,8 +262,8 @@
       "icon": "🌐",
       "description": "New API / One API 用户中心：账户绑定、额度查询、用量分析、模型统计、API 令牌管理及主动预警提醒",
       "min_runtime_version": "0.15.0",
-      "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime/main/plugins/plugin.na.zip",
-      "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime/main/plugins/plugin.na.zip",
+      "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.na.zip",
+      "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.na.zip",
       "sha256": "4180baecf49dcd9e39ab741b5cac0de4942aeb5fd18587fba84614c2609fce47",
       "permissions": [
         "network",
