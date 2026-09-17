@@ -5,7 +5,7 @@
     {
       "id": "plugin.drawimg.service",
       "name": "AI 绘图服务",
-      "version": "0.4.2",
+      "version": "0.4.3",
       "author": "Chinachani",
       "category": "ai",
       "icon": "🎨",
@@ -13,13 +13,13 @@
       "min_runtime_version": "0.7.0",
       "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.drawimg.service.zip",
       "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.drawimg.service.zip",
-      "sha256": "505d4178d4b195d525c39fd3912ee5f31fe5a9c4ffd5ebbac16b44a1f038ec72",
+      "sha256": "239e3c44a3a8f55b3713485e3031ac07e8658a9dc77f2f75d0696d582eae359a",
       "permissions": [
         "network",
         "chat.send",
         "points.manage"
       ],
-      "size_bytes": 64830,
+      "size_bytes": 65167,
       "tags": [
         "AI",
         "生图",
