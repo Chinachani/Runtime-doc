@@ -490,6 +490,14 @@ RUNTIME_PLUGIN_SANDBOX_NETWORK=true
 RUNTIME_PLUGIN_SANDBOX_TIMEOUT_SECONDS=300
 RUNTIME_PLUGIN_SANDBOX_MEMORY_MB=1024
 RUNTIME_PLUGIN_SANDBOX_CPU_SECONDS=0
+
+# 云端正版授权服务（框架已默认内置官方授权网关与签名验证，开箱即用，无需手动配置）
+# 部署完成后登录管理台，直接填写您的 QQ 机器人凭据即可自动完成云端授权激活。
+# 如需连接自定义私有化授权集群，取消下列注释即可覆盖内置配置：
+# RUNTIME_LICENSE_API_BASE_URL=https://v.567.wiki
+# RUNTIME_LICENSE_AUTH_DOMAIN=sq.567.wiki
+# RUNTIME_LICENSE_APP_ID=1
+# RUNTIME_LICENSE_ROBOT_WEB_URL=https://sq.567.wiki
 EOF
 chmod 600 .env
 
