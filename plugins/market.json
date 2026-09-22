@@ -1,6 +1,6 @@
 {
-  "version": "1.2.1",
-  "updated_at": "2026-09-17",
+  "version": "1.3.0",
+  "updated_at": "2026-09-22",
   "plugins": [
     {
       "id": "plugin.video.service",
