@@ -3,23 +3,75 @@
   "updated_at": "2026-09-17",
   "plugins": [
     {
-      "id": "plugin.drawimg.service",
-      "name": "AI 绘图服务",
-      "version": "0.4.3",
+      "id": "plugin.video.service",
+      "name": "AI 视频服务",
+      "version": "0.4.1",
       "author": "Chinachani",
       "category": "ai",
-      "icon": "🎨",
-      "description": "基于 Stable Diffusion 与 DALL-E 的 AI 智能绘图服务，支持免抠底图、提示词防改写、单图/多图改图与积分管理",
+      "icon": "🎬",
+      "description": "文生视频与图生视频多模态生成服务，深度兼容 OpenAI、Google Veo、Agnes 及自定义协议，全异步轮询队列与 QQ 富媒体通道",
       "min_runtime_version": "0.7.0",
-      "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.drawimg.service.zip",
-      "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.drawimg.service.zip",
-      "sha256": "239e3c44a3a8f55b3713485e3031ac07e8658a9dc77f2f75d0696d582eae359a",
+      "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.video.service.zip",
+      "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.video.service.zip",
+      "sha256": "2e135ca560b6da8f4c464fffc90fec0d72fbba402da800cc4a0d15c62aa05396",
       "permissions": [
         "network",
         "chat.send",
         "points.manage"
       ],
-      "size_bytes": 65167,
+      "size_bytes": 24642,
+      "tags": [
+        "AI",
+        "视频",
+        "文生视频",
+        "图生视频"
+      ],
+      "size": 24988
+    },
+    {
+      "id": "plugin.audio.service",
+      "name": "AI 语音服务",
+      "version": "0.4.1",
+      "author": "Chinachani",
+      "category": "ai",
+      "icon": "🎙️",
+      "description": "文字转语音 (TTS) 与声音克隆 / 音乐生成",
+      "min_runtime_version": "0.7.0",
+      "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.audio.service.zip",
+      "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.audio.service.zip",
+      "sha256": "68eb0718273515c3d4bfc973d0249d3381db8e68a394af6b6760d147e385b33e",
+      "permissions": [
+        "network",
+        "chat.send",
+        "points.manage"
+      ],
+      "size_bytes": 24609,
+      "tags": [
+        "AI",
+        "语音",
+        "TTS",
+        "朗读"
+      ],
+      "size": 24987
+    },
+    {
+      "id": "plugin.drawimg.service",
+      "name": "AI 绘图服务",
+      "version": "0.8.5",
+      "author": "Chinachani",
+      "category": "ai",
+      "icon": "🎨",
+      "description": "基于 Stable Diffusion 与 DALL-E 的 AI 智能绘图服务，支持智能红/绿/黄/蓝四色演播室幕布免抠底图（防反光漫反射）、提示词防改写、单图/多图改图与积分管理",
+      "min_runtime_version": "0.7.0",
+      "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.drawimg.service.zip",
+      "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.drawimg.service.zip",
+      "sha256": "7b4b0488a2646a42f4e84a7274c5242b6e16f6d098c2d1b0e6f5107f051eadee",
+      "permissions": [
+        "network",
+        "chat.send",
+        "points.manage"
+      ],
+      "size_bytes": 79942,
       "tags": [
         "AI",
         "生图",
@@ -78,7 +130,7 @@
     {
       "id": "plugin.bili",
       "name": "B站解析",
-      "version": "1.7.3",
+      "version": "1.7.5",
       "author": "Chinachani",
       "category": "media",
       "icon": "📺",
@@ -86,12 +138,12 @@
       "min_runtime_version": "0.12.0",
       "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.bili.zip",
       "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.bili.zip",
-      "sha256": "a65ee2856d1ee1ebfd895f2c96a12b7c1cc98e301546ea90bbd1bda05826c7af",
+      "sha256": "d7398ee19c0e3651b7679d53d6835797bce518331e60f9b82df48797cf792f6f",
       "permissions": [
         "network",
         "chat.send"
       ],
-      "size_bytes": 26751,
+      "size_bytes": 27948,
       "tags": [
         "B站",
         "视频",
@@ -104,7 +156,7 @@
     {
       "id": "plugin.dy",
       "name": "抖音解析",
-      "version": "0.6.7",
+      "version": "0.6.8",
       "author": "Chinachani",
       "category": "media",
       "icon": "🎵",
@@ -112,12 +164,12 @@
       "min_runtime_version": "0.12.0",
       "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.dy.zip",
       "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.dy.zip",
-      "sha256": "235d5cbb4821119e676bb62780a2eba1db945b917c3a3c0089d1f705e66ea6e0",
+      "sha256": "7b282c2feaa5551091cb103abf2f0937add1c30ea656281c5657a5b90d7afd7f",
       "permissions": [
         "network",
         "chat.send"
       ],
-      "size_bytes": 20246,
+      "size_bytes": 20432,
       "tags": [
         "抖音",
         "视频",
