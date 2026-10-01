@@ -5,7 +5,7 @@
     {
       "id": "plugin.video.service",
       "name": "AI 视频服务",
-      "version": "0.4.1",
+      "version": "0.4.2",
       "author": "Chinachani",
       "category": "ai",
       "icon": "🎬",
@@ -13,25 +13,24 @@
       "min_runtime_version": "0.7.0",
       "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.video.service.zip",
       "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.video.service.zip",
-      "sha256": "2e135ca560b6da8f4c464fffc90fec0d72fbba402da800cc4a0d15c62aa05396",
+      "sha256": "66c3037f15dabb0142c4f917db962cbc880c274f83484e55633dfb84357c6f6a",
       "permissions": [
         "network",
         "chat.send",
         "points.manage"
       ],
-      "size_bytes": 24642,
+      "size_bytes": 24820,
       "tags": [
         "AI",
         "视频",
         "文生视频",
         "图生视频"
-      ],
-      "size": 24988
+      ]
     },
     {
       "id": "plugin.audio.service",
       "name": "AI 语音服务",
-      "version": "0.4.1",
+      "version": "0.4.2",
       "author": "Chinachani",
       "category": "ai",
       "icon": "🎙️",
@@ -39,25 +38,24 @@
       "min_runtime_version": "0.7.0",
       "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.audio.service.zip",
       "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.audio.service.zip",
-      "sha256": "68eb0718273515c3d4bfc973d0249d3381db8e68a394af6b6760d147e385b33e",
+      "sha256": "8edc2ee6f92578f7feca5fd110068134ea7c1bb37b43bfecfc8a0db935656e67",
       "permissions": [
         "network",
         "chat.send",
         "points.manage"
       ],
-      "size_bytes": 24609,
+      "size_bytes": 24661,
       "tags": [
         "AI",
         "语音",
         "TTS",
         "朗读"
-      ],
-      "size": 24987
+      ]
     },
     {
       "id": "plugin.drawimg.service",
       "name": "AI 绘图服务",
-      "version": "0.8.5",
+      "version": "0.8.9",
       "author": "Chinachani",
       "category": "ai",
       "icon": "🎨",
@@ -65,13 +63,13 @@
       "min_runtime_version": "0.7.0",
       "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.drawimg.service.zip",
       "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.drawimg.service.zip",
-      "sha256": "7b4b0488a2646a42f4e84a7274c5242b6e16f6d098c2d1b0e6f5107f051eadee",
+      "sha256": "d277cd3a98d41c13eeb02c6419fefc0a8da53acb47dca41e3f95c9d161d8b2d9",
       "permissions": [
         "network",
         "chat.send",
         "points.manage"
       ],
-      "size_bytes": 79942,
+      "size_bytes": 80494,
       "tags": [
         "AI",
         "生图",
@@ -130,20 +128,20 @@
     {
       "id": "plugin.bili",
       "name": "B站解析",
-      "version": "1.8.0",
+      "version": "1.10.0",
       "author": "Chinachani",
       "category": "media",
       "icon": "📺",
-      "description": "B站音视频解析与下载，支持视频/视频文件与语音/音频文件发送、媒体超限自动文件兜底及下载站Cookie同步",
+      "description": "B站音视频解析与下载，支持标题命名的视频/音频文件及可配置的普通文件时长限制",
       "min_runtime_version": "0.12.0",
       "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.bili.zip",
       "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.bili.zip",
-      "sha256": "560b5c692429f32d977ee8a7e6325c35c28b065faa896b819e15a1e708c38588",
+      "sha256": "0865af8d956f9fb3cab012a3419134aec1c01c97f702f1ff427eb332a32d68d0",
       "permissions": [
         "network",
         "chat.send"
       ],
-      "size_bytes": 28245,
+      "size_bytes": 29304,
       "tags": [
         "B站",
         "视频",
@@ -156,7 +154,7 @@
     {
       "id": "plugin.dy",
       "name": "抖音解析",
-      "version": "0.6.8",
+      "version": "0.6.9",
       "author": "Chinachani",
       "category": "media",
       "icon": "🎵",
@@ -164,12 +162,12 @@
       "min_runtime_version": "0.12.0",
       "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.dy.zip",
       "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.dy.zip",
-      "sha256": "7b282c2feaa5551091cb103abf2f0937add1c30ea656281c5657a5b90d7afd7f",
+      "sha256": "63171de046630f8b11ef2467f4a4110dd9e05a7f2b1ea848815e61c488816529",
       "permissions": [
         "network",
         "chat.send"
       ],
-      "size_bytes": 20432,
+      "size_bytes": 20430,
       "tags": [
         "抖音",
         "视频",
@@ -232,20 +230,20 @@
     {
       "id": "plugin.watermarks",
       "name": "水印清理",
-      "version": "1.3.6",
+      "version": "1.6.1",
       "author": "Chinachani",
       "category": "tools",
       "icon": "🧹",
-      "description": "多媒体元数据与隐写水印检测清理插件，支持识别 C2PA、EXIF、XMP 及常见 AI 生成工具内嵌标记",
+      "description": "多媒体元数据检测清理，可靠来源优先，未知来源自动使用 OpenAI 官方验证兜底",
       "min_runtime_version": "0.12.0",
       "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.watermarks.zip",
       "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.watermarks.zip",
-      "sha256": "477a34cacd579e4b558c3d3f7acf72ff303a65f06f132d27a5283e3d162dcd1a",
+      "sha256": "0749c4932ddba3f17fdcef01287f8e97a2d880c3507ac9b459e64fa455ca41d2",
       "permissions": [
         "network",
         "chat.send"
       ],
-      "size_bytes": 21722,
+      "size_bytes": 26535,
       "tags": [
         "水印",
         "元数据",
