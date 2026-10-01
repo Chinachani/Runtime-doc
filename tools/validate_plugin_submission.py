@@ -388,7 +388,7 @@ def main() -> int:
         print(f"- 标识: {market_entry['id']}")
         print(f"- 名称: {market_entry['name']}")
         print(f"- 版本: {market_entry['version']}")
-        print(f"- 体积: {market_entry['size_bytes']} 字节 ({Math.round(market_entry['size_bytes']/1024) if False else round(market_entry['size_bytes']/1024)} KB)")
+        print(f"- 体积: {market_entry['size_bytes']} 字节 ({round(market_entry['size_bytes']/1024)} KB)")
         print(f"- SHA-256: {market_entry['sha256']}")
         if warnings:
             print(f"- 警告提示: {', '.join(warnings)}")
