@@ -1,60 +1,43 @@
 # QQ Runtime
 
-QQ 官方机器人运行时框架（企业级聚合发行版）。基于 Python 3.12 + FastAPI + SQLite，
-内置管理台、授权体系、插件沙箱与积分/支付/媒体等全套能力。
+QQ 官方机器人运行时框架。提供统一的机器人接入、Web 管理台、插件系统和配套部署工具。
 
-> 💡 **提示**：本仓库为公开文档与发行仓库，用于发布**一键部署脚本**、**客户端安装包**、**部署教程**与**更新日志**。
-> 框架核心以加固镜像分发，不在此处提供私有后端源码。
+本仓库是 Runtime 的公开文档与发行入口：包含安装脚本、用户指南、插件生态资料、版本日志和可下载的发行附件。框架源码与构建流程由发行方在主仓库维护；请勿把内部运维资料复制到此处。
 
----
+## 快速部署
 
-## ⚡ 极速部署（推荐 Docker）
-
-在任何 Linux 服务器上只需运行一行命令，即可全自动完成硬件架构自检、Docker 状态监控与自启、国内高速镜像加速源选择及一键集群拉起：
+推荐在受支持的 Linux 主机上使用交互式安装脚本。脚本会检查 Docker 环境、可用端口和硬件，并引导选择附加服务及初始管理员账户。
 
 ```bash
-# 官方公网源安装
 curl -fsSL https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/install.sh | bash
+```
 
-# 国内高速加速安装（gh-proxy 加速）
+国内网络可使用加速地址：
+
+```bash
 curl -fsSL https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/install.sh | bash
 ```
 
-### 内置国内 Docker 镜像加速源
-- `ghcr.1ms.run/chinachani/qq-runtime:latest`（国内毫秒级高速分发，推荐）
-- `ghcr.nju.edu.cn/chinachani/qq-runtime:latest`（南京大学开源镜像站）
-- `ghcr.milu.moe/chinachani/qq-runtime:latest`（麋鹿社区开源加速）
-- `docker.m.daocloud.io/ghcr.io/chinachani/qq-runtime:latest`（DaoCloud 镜像）
-- `ghcr.io/chinachani/qq-runtime:latest`（GitHub 官方全球源）
+首次部署、升级、备份与排错见[部署教程](docs/部署教程.md)。安装前也可以先从本仓库下载 `install.sh` 检查脚本内容，再执行。
 
----
+## 文档
 
-## 💻 桌面端与移动客户端下载
-
-QQ Runtime 支持多端原生直连（自带节点管理与断网秒开切换）：
-
-- **Windows 桌面一体化版**（`.exe`，集成免 Docker 本地运行时）：可在本仓库 [Releases 最新发行页](../../releases/latest) 直接下载。
-- **macOS 桌面一体化版**（`.dmg`）：可在本仓库 [Releases 最新发行页](../../releases/latest) 直接下载。
-- **Android 移动客户端**（`.apk`，支持前台保活与掉线提醒）：可在本仓库 [Releases 最新发行页](../../releases/latest) 直接下载。
-
----
-
-## 📚 开发者文档与生态
-
-| 文档 | 说明 |
+| 内容 | 适合读者 |
 | --- | --- |
-| [docs/部署教程.md](docs/部署教程.md) | 从零部署一个机器人实例 |
-| [docs/插件开发指南.md](docs/插件开发指南.md) | 插件结构、权限、卡片、网页面板、本地打包测试 |
-| [docs/插件上架指南.md](docs/插件上架指南.md) | 插件市场提交规范、一键提审与自动化审查流程 |
-| [docs/授权协议.md](docs/授权协议.md) | 软件许可与授权协议 |
-| [examples/plugin.demo.guide/](examples/plugin.demo.guide/) | 示例插件（对应开发指南的完整演示） |
+| [全部公开文档索引](docs/README.md) | 所有用户 |
+| [部署教程](docs/部署教程.md) | Runtime 管理员 |
+| [插件开发指南](docs/插件开发指南.md) | 插件作者 |
+| [插件市场上架指南](docs/插件上架指南.md) | 插件作者与审核提交者 |
+| [软件许可协议模板](docs/授权协议.md) | 需起草授权协议的发行方；模板须经法律审阅 |
+| [插件 Demo](examples/plugin.demo.guide/) | 插件作者 |
+| [版本更新日志](CHANGELOG.md) | Runtime 用户与管理员 |
 
-## 授权与版本
+## 版本与下载
 
-- 框架按授权级别开放功能；未授权实例仅可执行诊断指令。
-- 管理台「关于/更新」会自动检查本仓库的 Release 获取新版本与更新日志。
-- 商业插件按 `[license]` 授权块与厂商签名发放。
+- 最新框架镜像、客户端和插件附件以 [Releases](https://github.com/Chinachani/Runtime-doc/releases) 中实际提供的资产为准；不同版本可能包含不同附件。
+- 管理台会检查本仓库的 Release 并显示对应版本说明。
+- Docker 镜像源与更新方式见[部署教程](docs/部署教程.md)。
 
-## 联系
+## 支持
 
-通过授权渠道联系发行方获取授权。
+遇到部署或授权问题，请先查看文档索引和常见问题，再通过随授权提供的支持渠道联系发行方。提交问题时请先移除日志中的密码、Token、Cookie、API Key、IP 白名单等敏感信息。
