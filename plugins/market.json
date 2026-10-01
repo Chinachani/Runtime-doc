@@ -130,20 +130,20 @@
     {
       "id": "plugin.bili",
       "name": "B站解析",
-      "version": "1.7.5",
+      "version": "1.8.0",
       "author": "Chinachani",
       "category": "media",
       "icon": "📺",
-      "description": "B站音视频解析与下载，支持视频下载、原生音频直连提取、音频文件以视频标题命名、与下载站双向Cookie自动同步、超长音频自动降级普通文件发送及卡片交互",
+      "description": "B站音视频解析与下载，支持视频/视频文件与语音/音频文件发送、媒体超限自动文件兜底及下载站Cookie同步",
       "min_runtime_version": "0.12.0",
       "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.bili.zip",
       "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.bili.zip",
-      "sha256": "d7398ee19c0e3651b7679d53d6835797bce518331e60f9b82df48797cf792f6f",
+      "sha256": "560b5c692429f32d977ee8a7e6325c35c28b065faa896b819e15a1e708c38588",
       "permissions": [
         "network",
         "chat.send"
       ],
-      "size_bytes": 27948,
+      "size_bytes": 28245,
       "tags": [
         "B站",
         "视频",
@@ -232,20 +232,20 @@
     {
       "id": "plugin.watermarks",
       "name": "水印清理",
-      "version": "1.3.4",
+      "version": "1.3.6",
       "author": "Chinachani",
       "category": "tools",
       "icon": "🧹",
-      "description": "多媒体元数据与隐写水印检测清理插件，支持检测与擦除 EXIF、XMP、C2PA、隐写字符、双向控制符及 AI 生成元数据标记，提供完整 QQ 交互卡片与原生管理台集成",
+      "description": "多媒体元数据与隐写水印检测清理插件，支持识别 C2PA、EXIF、XMP 及常见 AI 生成工具内嵌标记",
       "min_runtime_version": "0.12.0",
       "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.watermarks.zip",
       "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.watermarks.zip",
-      "sha256": "7f863f71e1782ba4fe848f035f2375dd84352e46b7422634f460d630925449b3",
+      "sha256": "477a34cacd579e4b558c3d3f7acf72ff303a65f06f132d27a5283e3d162dcd1a",
       "permissions": [
         "network",
         "chat.send"
       ],
-      "size_bytes": 20023,
+      "size_bytes": 21722,
       "tags": [
         "水印",
         "元数据",
