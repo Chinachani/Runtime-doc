@@ -154,20 +154,20 @@
     {
       "id": "plugin.dy",
       "name": "抖音解析",
-      "version": "0.6.9",
+      "version": "0.6.12",
       "author": "Chinachani",
       "category": "media",
       "icon": "🎵",
-      "description": "抖音音视频与图集解析下载，支持视频下载、图集Markdown卡片翻页浏览、ZIP原图打包发送、音频提取及卡片交互",
+      "description": "抖音解析支持视频媒体失败后普通文件兜底、可配置的大小与时长限制、标题命名及三排卡片操作",
       "min_runtime_version": "0.12.0",
       "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.dy.zip",
       "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.dy.zip",
-      "sha256": "63171de046630f8b11ef2467f4a4110dd9e05a7f2b1ea848815e61c488816529",
+      "sha256": "f7ec7d390737aa4bddc23d84667de56c83245ba5fb2da05f953e217314e83a12",
       "permissions": [
         "network",
         "chat.send"
       ],
-      "size_bytes": 20430,
+      "size_bytes": 21442,
       "tags": [
         "抖音",
         "视频",
