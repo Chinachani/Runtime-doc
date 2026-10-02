@@ -1,6 +1,6 @@
 {
   "version": "1.3.0",
-  "updated_at": "2026-09-22",
+  "updated_at": "2026-10-03",
   "plugins": [
     {
       "id": "plugin.video.service",
@@ -230,7 +230,7 @@
     {
       "id": "plugin.watermarks",
       "name": "水印清理",
-      "version": "1.6.1",
+      "version": "1.6.2",
       "author": "Chinachani",
       "category": "tools",
       "icon": "🧹",
@@ -238,12 +238,12 @@
       "min_runtime_version": "0.12.0",
       "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.watermarks.zip",
       "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.watermarks.zip",
-      "sha256": "0749c4932ddba3f17fdcef01287f8e97a2d880c3507ac9b459e64fa455ca41d2",
+      "sha256": "f72f600e13c9652b25123434368dee1055a08ace597ca4bf248eacf4f1bfb2b6",
       "permissions": [
         "network",
         "chat.send"
       ],
-      "size_bytes": 26535,
+      "size_bytes": 27918,
       "tags": [
         "水印",
         "元数据",
