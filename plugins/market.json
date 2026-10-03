@@ -154,7 +154,7 @@
     {
       "id": "plugin.dy",
       "name": "抖音解析",
-      "version": "0.6.12",
+      "version": "0.6.13",
       "author": "Chinachani",
       "category": "media",
       "icon": "🎵",
@@ -162,12 +162,12 @@
       "min_runtime_version": "0.12.0",
       "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.dy.zip",
       "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.dy.zip",
-      "sha256": "f7ec7d390737aa4bddc23d84667de56c83245ba5fb2da05f953e217314e83a12",
+      "sha256": "37624df7940be0f312db4567a5ab8a2673cb2982f819931ca0e1f0bcfddb4f28",
       "permissions": [
         "network",
         "chat.send"
       ],
-      "size_bytes": 21442,
+      "size_bytes": 21848,
       "tags": [
         "抖音",
         "视频",
@@ -230,7 +230,7 @@
     {
       "id": "plugin.watermarks",
       "name": "水印清理",
-      "version": "1.6.2",
+      "version": "1.6.3",
       "author": "Chinachani",
       "category": "tools",
       "icon": "🧹",
@@ -238,12 +238,12 @@
       "min_runtime_version": "0.12.0",
       "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.watermarks.zip",
       "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.watermarks.zip",
-      "sha256": "f72f600e13c9652b25123434368dee1055a08ace597ca4bf248eacf4f1bfb2b6",
+      "sha256": "6174217ec6c424414e8491413e11c7702dd8fedf4a3a16933c860193dd7979f4",
       "permissions": [
         "network",
         "chat.send"
       ],
-      "size_bytes": 27918,
+      "size_bytes": 28818,
       "tags": [
         "水印",
         "元数据",
