@@ -55,7 +55,7 @@
     {
       "id": "plugin.drawimg.service",
       "name": "AI 绘图服务",
-      "version": "0.8.9",
+      "version": "0.9.0",
       "author": "Chinachani",
       "category": "ai",
       "icon": "🎨",
@@ -63,7 +63,7 @@
       "min_runtime_version": "0.7.0",
       "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.drawimg.service.zip",
       "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.drawimg.service.zip",
-      "sha256": "d277cd3a98d41c13eeb02c6419fefc0a8da53acb47dca41e3f95c9d161d8b2d9",
+      "sha256": "aaad50b2a27566b8ca5fd5b8af1e388a41319fe77586e7009bb937785f45964a",
       "permissions": [
         "network",
         "chat.send",
@@ -75,7 +75,8 @@
         "生图",
         "绘画",
         "积分"
-      ]
+      ],
+      "size": 82551
     },
     {
       "id": "plugin.word2ppt",
@@ -128,7 +129,7 @@
     {
       "id": "plugin.bili",
       "name": "B站解析",
-      "version": "1.10.0",
+      "version": "1.11.0",
       "author": "Chinachani",
       "category": "media",
       "icon": "📺",
@@ -136,7 +137,7 @@
       "min_runtime_version": "0.12.0",
       "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.bili.zip",
       "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.bili.zip",
-      "sha256": "0865af8d956f9fb3cab012a3419134aec1c01c97f702f1ff427eb332a32d68d0",
+      "sha256": "cfbaef299be9c0fe7004940e6f0bdf5c3072633d6bdb7bc582f42a607ad1e0e0",
       "permissions": [
         "network",
         "chat.send"
@@ -149,12 +150,13 @@
         "解析",
         "下载",
         "Cookie同步"
-      ]
+      ],
+      "size": 31133
     },
     {
       "id": "plugin.dy",
       "name": "抖音解析",
-      "version": "0.6.13",
+      "version": "0.6.14",
       "author": "Chinachani",
       "category": "media",
       "icon": "🎵",
@@ -162,7 +164,7 @@
       "min_runtime_version": "0.12.0",
       "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.dy.zip",
       "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.dy.zip",
-      "sha256": "37624df7940be0f312db4567a5ab8a2673cb2982f819931ca0e1f0bcfddb4f28",
+      "sha256": "8912ef91009a06f0db1938ddbdf6cf1879eaffd408a293ed39b660fea5928e90",
       "permissions": [
         "network",
         "chat.send"
@@ -177,7 +179,8 @@
         "音频",
         "解析",
         "下载"
-      ]
+      ],
+      "size": 22211
     },
     {
       "id": "plugin.selfauth",
