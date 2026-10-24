@@ -3,6 +3,16 @@
 格式参考 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)；
 版本号遵循语义化版本。买家通过管理台「更新检查」或本页获取新版本信息。
 
+## [1.7.0] - 2026-10-24
+
+### 移除商业授权体系，运行时完全本地化
+
+- 删除 SQ 商业许可与授权中心集成（`runtime/license.py`、`runtime/license_service.py`、`runtime/gate.py`）：机器人不再需要授权即可使用全部功能，包括 MD Pro。
+- 入站/出站授权门禁全部移除：事件派发、消息发送、媒体上传、定时任务与插件任务不再查询授权缓存；发行版完整性自检迁移到启动路径与事件派发器，继续以 fail-closed 方式执行。
+- 插件信任保留开发者模式与签名策略；`Sq2PluginTrustVerifier` 随授权体系一并移除，插件向代码暴露的 `context.license` 改为恒定空状态，IPC 协议形状不变，已发布插件无需更新。
+- 更新检查移除 SQ 渠道，仅保留 GitHub Releases（Runtime-doc）渠道；`RUNTIME_LICENSE_*` 与 `RUNTIME_ROBOT_WEB_URL` 环境变量全部移除。
+- 概览页与工作台的授权展示移除，替换为数据库与部署状态卡片；框架版本升至 `1.7.0`（Android `versionCode=60`）。
+
 ## [1.6.3] - 2026-10-03
 
 - 修复水印插件后台检测在独立 worker 中无法发送结果的问题，并为任务关闭、失败、重复触发和记录清理补充回归测试。
