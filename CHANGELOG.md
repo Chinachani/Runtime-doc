@@ -3,6 +3,13 @@
 格式参考 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)；
 版本号遵循语义化版本。买家通过管理台「更新检查」或本页获取新版本信息。
 
+## [1.7.4] - 2026-10-25
+
+### 修复 plugin.drawimg.service 0.9.1：周期清理任务误关闭状态写盘线程池
+
+- 修复 `/dg model` 等所有需要保存状态的指令报错 `cannot schedule new futures after shutdown` 的问题：1.7.3 把每小时运行的 `cleanup` 周期任务误当作关闭钩子加入了线程池 `shutdown`，首次运行后所有状态写盘（用户偏好/积分缓存/历史）全部失败。现在写盘器随插件生命周期管理，并对已关闭的线程池提供同步写回退，附回归测试。
+- 框架版本升至 `1.7.4`（Android `versionCode=64`）。
+
 ## [1.7.2] - 2026-10-24
 
 - 授权体系移除收尾：`/legacy` 回滚入口概览页的授权卡片替换为部署状态卡片，不再调用已删除的授权端点；`context.license` 恒定空状态的 `authorized` 语义修正为已授权，保障第三方插件的兼容判断。
