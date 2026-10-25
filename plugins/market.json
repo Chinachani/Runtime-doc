@@ -55,7 +55,7 @@
     {
       "id": "plugin.drawimg.service",
       "name": "AI 绘图服务",
-      "version": "0.9.1",
+      "version": "0.9.2",
       "author": "Chinachani",
       "category": "ai",
       "icon": "🎨",
@@ -63,7 +63,7 @@
       "min_runtime_version": "0.7.0",
       "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.drawimg.service.zip",
       "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.drawimg.service.zip",
-      "sha256": "e74a32bb1034021ea01bb1973133a509fdd3306d80eb7b56a05cde3fcea6a001",
+      "sha256": "fa8f6e1118305c9537d45860937fd11c10dad75a3239fb2a0b6fda7054d8bb0a",
       "permissions": [
         "network",
         "chat.send",
@@ -76,7 +76,7 @@
         "绘画",
         "积分"
       ],
-      "size": 82563
+      "size": 83130
     },
     {
       "id": "plugin.word2ppt",
