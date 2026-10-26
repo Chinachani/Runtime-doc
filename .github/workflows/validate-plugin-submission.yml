@@ -1,0 +1,85 @@
+name: Validate and Merge Plugin Submission
+
+on:
+  issues:
+    types: [opened, edited, labeled]
+
+jobs:
+  validate:
+    if: contains(github.event.issue.labels.*.name, 'plugin-submission') || startsWith(github.event.issue.title, '[Plugin Submission]')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+
+    steps:
+      - name: Checkout Runtime-doc repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate Plugin Submission
+        id: validator
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          python3 tools/validate_plugin_submission.py \
+            --issue-body "$ISSUE_BODY" \
+            --market-json-path plugins/market.json \
+            --update-market \
+            --output-json > result.json 2>&1 || {
+              echo "VALIDATION_FAILED=true" >> $GITHUB_ENV
+              cat result.json
+              exit 1
+            }
+          cat result.json
+
+      - name: Commit and Push Updated market.json
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if [[ -n $(git status --porcelain plugins/market.json) ]]; then
+            git add plugins/market.json
+            git commit -m "chore(market): add/update plugin from issue #${{ github.event.issue.number }}"
+            git push origin main
+          fi
+
+      - name: Comment Success on Issue
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const result = JSON.parse(fs.readFileSync('result.json', 'utf8'));
+            const entry = result.market_entry;
+            const body = `### 🎉 插件审核通过并已成功上架！\n\n- **插件标识**: \`${entry.id}\`\n- **版本**: \`v${entry.version}\`\n- **动作**: 已更新至官方插件市场目录 \`plugins/market.json\`\n- **生效范围**: 所有运行 QQ Runtime 的节点在刷新市场后即可一键安装或更新此插件。\n\n感谢您对 QQ 机器人开发者生态的贡献！`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: body
+            });
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              state: 'closed',
+              labels: ['plugin-submission', 'approved']
+            });
+
+      - name: Comment Failure on Issue
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = `### ❌ 插件提审自动校验未通过\n\n自动化检查脚本在校验插件包或元数据时遇到错误，请检查以下问题并重新修改 Issue：\n\n1. 请确保 Release 下载链接为直链，且允许公开下载。\n2. 请确保 SHA-256 校验码与上传的 ZIP 包完全一致。\n3. 请确保插件根目录包含符合规范的 \`plugin.toml\`，且 ID 以 \`plugin.\` 开头。\n\n修改 Issue 内容后，机器人将重新自动触发校验。`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: body
+            });
