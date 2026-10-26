@@ -3,6 +3,18 @@
 格式参考 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)；
 版本号遵循语义化版本。买家通过管理台「更新检查」或本页获取新版本信息。
 
+## [1.7.7] - 2026-10-26
+
+### 修复
+
+- 修复插件市场 `plugin.audio.service`、`plugin.video.service` 在全新部署下无法安装的问题：发布脚本的插件包清单原先硬编码且与市场目录脱节，这两个包从未随版本发布，Runtime-doc 上仍是 0.4.1 旧包，而目录声明 0.4.2，安装时必然在 SHA-256 校验处失败。发布清单现直接从 `plugins/market.json` 派生，目录里每个插件都必须有对应发布包，并补充回归测试锁住该约束。
+- 修正 `CHANGELOG` 中 1.4.0–1.6.3 各版本的 Android `versionCode` 记录：CI 自 v0.6.10 起按 `major*1000000 + minor*1000 + patch` 自动写入，历史记录写的两位数序号与实际产物不符。
+- 移除 `/legacy/classic` 快照中指向已删除 `/api/license/check` 的"商业授权"卡片与"重新校验授权"按钮，改为显示部署状态（版本、运行时长、数据库、开发者模式、启动恢复），与新版控制台一致。
+- 清理旧版控制台里对从未注册过的插件 ID（`runtime.na`、`runtime.bili`、`runtime.dy`、`runtime.sw`、`runtime.meme`、`runtime.watermarks`、`runtime.drawimg`）的分支判断及其 import，这些分支永远不可能命中，实际插件 ID 为 `plugin.*`。
+- 移除公开文档索引与发行仓库 README 中指向不存在文件的"软件许可协议模板"链接，以及发布流程映射表中对应的失效条目。
+- 修正 `tests/conftest.py` 中仍在描述已删除 gateway 包的注释，以及 `AGENTS.md` 里把"授权"写成 `app.py` 与 `dispatcher.py` 职责的过时描述。
+- 框架版本升至 `1.7.7`（Android `versionCode=1007007`）。
+
 ## [1.7.6] - 2026-10-26
 
 ### 修复
