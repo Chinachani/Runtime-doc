@@ -28,7 +28,6 @@ curl -fsSL https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Run
 | [部署教程](docs/部署教程.md) | Runtime 管理员 |
 | [插件开发指南](docs/插件开发指南.md) | 插件作者 |
 | [插件市场上架指南](docs/插件上架指南.md) | 插件作者与审核提交者 |
-| [软件许可协议模板](docs/授权协议.md) | 需起草授权协议的发行方；模板须经法律审阅 |
 | [插件 Demo](examples/plugin.demo.guide/) | 插件作者 |
 | [版本更新日志](CHANGELOG.md) | Runtime 用户与管理员 |
 
