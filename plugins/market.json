@@ -1,6 +1,6 @@
 {
   "version": "1.3.0",
-  "updated_at": "2026-10-03",
+  "updated_at": "2026-10-26",
   "plugins": [
     {
       "id": "plugin.video.service",
@@ -69,7 +69,7 @@
         "chat.send",
         "points.manage"
       ],
-      "size_bytes": 80494,
+      "size_bytes": 83130,
       "tags": [
         "AI",
         "生图",
@@ -142,7 +142,7 @@
         "network",
         "chat.send"
       ],
-      "size_bytes": 29304,
+      "size_bytes": 31133,
       "tags": [
         "B站",
         "视频",
@@ -169,7 +169,7 @@
         "network",
         "chat.send"
       ],
-      "size_bytes": 21848,
+      "size_bytes": 22211,
       "tags": [
         "抖音",
         "视频",
