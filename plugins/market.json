@@ -129,20 +129,20 @@
     {
       "id": "plugin.bili",
       "name": "B站解析",
-      "version": "1.11.0",
+      "version": "1.11.2",
       "author": "Chinachani",
       "category": "media",
       "icon": "📺",
-      "description": "B站音视频解析与下载，支持标题命名的视频/音频文件及可配置的普通文件时长限制",
+      "description": "B站音视频解析与下载，支持超限自动降低音视频清晰度、播放器直达及普通文件时长限制",
       "min_runtime_version": "0.12.0",
       "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.bili.zip",
       "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.bili.zip",
-      "sha256": "cfbaef299be9c0fe7004940e6f0bdf5c3072633d6bdb7bc582f42a607ad1e0e0",
+      "sha256": "56ba04512bc1be9059ba2bb7c92e2f502c0ecbab4279628f3753db87d5b81e99",
       "permissions": [
         "network",
         "chat.send"
       ],
-      "size_bytes": 31133,
+      "size_bytes": 32045,
       "tags": [
         "B站",
         "视频",
@@ -151,25 +151,25 @@
         "下载",
         "Cookie同步"
       ],
-      "size": 31133
+      "size": 32045
     },
     {
       "id": "plugin.dy",
       "name": "抖音解析",
-      "version": "0.6.14",
+      "version": "0.6.15",
       "author": "Chinachani",
       "category": "media",
       "icon": "🎵",
-      "description": "抖音解析支持视频媒体失败后普通文件兜底、可配置的大小与时长限制、标题命名及三排卡片操作",
+      "description": "抖音解析支持超限自动降低视频画质、音频低码率压缩、普通文件兜底及三排卡片操作",
       "min_runtime_version": "0.12.0",
       "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.dy.zip",
       "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.dy.zip",
-      "sha256": "8912ef91009a06f0db1938ddbdf6cf1879eaffd408a293ed39b660fea5928e90",
+      "sha256": "93e4a38cb344e13337960297e3e30e3ecb94ed0cdfad8759110dab41858d92da",
       "permissions": [
         "network",
         "chat.send"
       ],
-      "size_bytes": 22211,
+      "size_bytes": 22825,
       "tags": [
         "抖音",
         "视频",
@@ -180,7 +180,7 @@
         "解析",
         "下载"
       ],
-      "size": 22211
+      "size": 22825
     },
     {
       "id": "plugin.selfauth",
