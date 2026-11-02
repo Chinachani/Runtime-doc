@@ -129,20 +129,20 @@
     {
       "id": "plugin.bili",
       "name": "B站解析",
-      "version": "1.11.2",
+      "version": "1.11.3",
       "author": "Chinachani",
       "category": "media",
       "icon": "📺",
-      "description": "B站音视频解析与下载，支持超限自动降低音视频清晰度、播放器直达及普通文件时长限制",
+      "description": "B站音视频解析与下载，支持播放器直达、手机适配封面及超限自动降低清晰度",
       "min_runtime_version": "0.12.0",
       "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.bili.zip",
       "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.bili.zip",
-      "sha256": "56ba04512bc1be9059ba2bb7c92e2f502c0ecbab4279628f3753db87d5b81e99",
+      "sha256": "1cecd800ce0268be9343750cf4774b48bb663b4098f63b9a12587c73b87fa0da",
       "permissions": [
         "network",
         "chat.send"
       ],
-      "size_bytes": 32045,
+      "size_bytes": 32162,
       "tags": [
         "B站",
         "视频",
@@ -151,25 +151,25 @@
         "下载",
         "Cookie同步"
       ],
-      "size": 32045
+      "size": 32162
     },
     {
       "id": "plugin.dy",
       "name": "抖音解析",
-      "version": "0.6.15",
+      "version": "0.6.16",
       "author": "Chinachani",
       "category": "media",
       "icon": "🎵",
-      "description": "抖音解析支持超限自动降低视频画质、音频低码率压缩、普通文件兜底及三排卡片操作",
+      "description": "抖音解析支持超限自动降低画质、手机适配图片及普通文件兜底",
       "min_runtime_version": "0.12.0",
       "download_url": "https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.dy.zip",
       "proxy_download_url": "https://gh-proxy.com/https://raw.githubusercontent.com/Chinachani/Runtime-doc/main/plugins/plugin.dy.zip",
-      "sha256": "93e4a38cb344e13337960297e3e30e3ecb94ed0cdfad8759110dab41858d92da",
+      "sha256": "f55e3742f548e00ac332f8a84d8c11b52c8eee9926a122ce83d081f8f4063f91",
       "permissions": [
         "network",
         "chat.send"
       ],
-      "size_bytes": 22825,
+      "size_bytes": 22936,
       "tags": [
         "抖音",
         "视频",
@@ -180,7 +180,7 @@
         "解析",
         "下载"
       ],
-      "size": 22825
+      "size": 22936
     },
     {
       "id": "plugin.selfauth",
