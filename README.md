@@ -1,10 +1,18 @@
 # QQ Runtime
 
-[![Version](https://img.shields.io/badge/version-1.7.9-blue)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.7.11-blue)](CHANGELOG.md)
 
 QQ 官方机器人运行时框架，提供 WebSocket/Webhook 接入、Web 管理台、插件市场、音视频与文件处理、积分支付和配套部署工具。
 
 本仓库是 Runtime 的公开文档与发行入口：包含安装脚本、用户指南、插件生态资料、版本日志和可下载的发行附件。框架源码与构建流程由发行方在主仓库维护；请勿把内部运维资料复制到此处。
+
+## 1.7.11 更新
+
+修复管理台和 APK 构建时 Google Fonts 地址解析导致的偶发编译失败，固定使用包含上游修复的 Next.js 稳定版 `16.4.4`。发布附件见 [v1.7.11 Release](https://github.com/Chinachani/Runtime-doc/releases/tag/v1.7.11)，详细内容见 [CHANGELOG](CHANGELOG.md)。
+
+## 1.7.10 更新
+
+修复插件菜单按钮重复回调应答、正常回复丢失的问题。菜单过期时会明确提示重新打开；点击后不再等待插件处理完成才应答。发布附件见 [v1.7.10 Release](https://github.com/Chinachani/Runtime-doc/releases/tag/v1.7.10)，详细内容见 [CHANGELOG](CHANGELOG.md)。
 
 ## 1.7.9 更新重点
 
