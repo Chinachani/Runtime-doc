@@ -1,0 +1,13 @@
+# Opt-in strong isolation. Read docs/部署教程.md before enabling.
+# docker compose -f compose.yaml -f compose.bwrap.yaml up -d runtime
+services:
+  runtime:
+    environment:
+      RUNTIME_PLUGIN_SANDBOX_BACKEND: bwrap
+    security_opt:
+      - no-new-privileges:true
+      - seccomp=./deploy/runtime-bwrap-seccomp.json
+      # Docker's masked proc submounts prevent an unprivileged nested PID
+      # namespace from mounting its own proc. Runtime stays non-root, all
+      # capabilities dropped; workers get a fresh, read-only proc filesystem.
+      - systempaths=unconfined
